@@ -25,6 +25,8 @@ This is a place where you can write your code, have it deploy on webflow both in
 
 Assuming you've followed the first [first install guide](./docs/setup.md), what follows are instructions for setting up every time you start a new project, and generally on how to use the project.
 
+---
+
 ### Webflow Project Setup
 
 #### Javascript
@@ -98,6 +100,14 @@ import { something } from "something";
 ```
 
 [Usage Examples]()
+
+#### Concepts
+
+You'll work inside the `src/` folder, and `app.js` is your main javascript entry points. You'll use this to import other scripts.
+
+If you'll use multiple files as entry point (ie one per page), after you've modified the config for that, you might want to rename your entry points accordingly (`home.js`, `about.js`, ...).
+
+---
 
 ### Api deployment
 
