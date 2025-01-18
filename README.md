@@ -50,6 +50,24 @@ Develoopment on webflow. Fast. Direct deployment, CI/CD. Both js and css.Live re
 
 ## Installation & Setup
 
+```html
+<!-- How to get the dual script working -->
+<script>
+  function onErrorLoader() {
+    const script = document.createElement("script");
+    script.src = "...";
+    script.defer = "true";
+    document.head.appendChild(script);
+  }
+</script>
+
+<script
+  defer
+  src="http://localhost:6545/app.js"
+  onerror="onErrorLoader()"
+></script>
+```
+
 ### Simple Dev
 
 ### Script Running
