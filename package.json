@@ -7,8 +7,7 @@
     "bundle": "bun run bin/build.ts"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "bun-vercel": "^1.0.0-alpha.5"
+    "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

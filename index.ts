@@ -1,4 +1,5 @@
 import { watch } from "fs";
+import { ServerWebSocket } from "bun";
 import { generateResponse } from "./bin/generateResponse";
 import { liveReloadCode } from "./bin/live-reload";
 import { CONFIG } from "./bin/config";

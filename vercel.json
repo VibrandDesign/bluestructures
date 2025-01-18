@@ -1,6 +1,5 @@
 {
   "buildCommand": "bun bundle",
   "devCommand": "bun --watch run index.ts",
-  "installCommand": "bun install",
   "outputDirectory": "dist"
 }

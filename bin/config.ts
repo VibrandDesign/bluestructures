@@ -9,6 +9,6 @@ export const CONFIG = {
 
   // Development features
   MINIFY: process.env.NODE_ENV === "production",
-  SOURCEMAP: "external",
+  SOURCEMAP: "inline" as const,
   EXPERIMENTAL_CSS: true,
-} as const;
+};
