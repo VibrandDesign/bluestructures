@@ -6,10 +6,10 @@
     "bun-types": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.7.3"
   },
   "scripts": {
-    "dev": "bun --watch run index.ts",
+    "dev": "bun --watch run bin/index.ts",
     "bundle": "bun run bin/build.ts",
     "api": "bun --watch run bin/api.ts"
   },

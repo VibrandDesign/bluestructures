@@ -1,8 +1,8 @@
 import { watch } from "fs";
 import { ServerWebSocket } from "bun";
-import { generateResponse } from "./bin/generateResponse";
-import { liveReloadCode } from "./bin/live-reload";
-import { CONFIG } from "./bin/config";
+import { generateResponse } from "./generateResponse";
+import { liveReloadCode } from "./live-reload";
+import { CONFIG } from "./config";
 
 // Keep track of the latest build result
 
