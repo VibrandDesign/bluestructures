@@ -1,18 +1,17 @@
 {
   "name": "webflow-dev-setup",
   "module": "index.ts",
-  "type": "module",
-  "scripts": {
-    "dev": "bun --watch run index.ts",
-    "bundle": "bun run bin/build.ts"
-  },
   "devDependencies": {
+    "bun": "^1.1.45",
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "dependencies": {
-    "bun": "^1.1.45"
-  }
+  "scripts": {
+    "dev": "bun --watch run index.ts",
+    "bundle": "bun run bin/build.ts",
+    "api": "bun --watch run bin/api.ts"
+  },
+  "type": "module"
 }
