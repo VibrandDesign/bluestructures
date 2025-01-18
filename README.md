@@ -4,6 +4,25 @@ My (as fast as it can get) dev setup for using big boys code inside of Webflow, 
 
 **If you're setting up for the first time please [read these instructions](./docs/setup.md)**
 
+Here's a set of commands you should run from yout project(s) folder to get up and running.
+
+```shell
+# create folder for your new project
+mkdir {PROJECT_NAME}
+
+# get into that folder
+cd {PROJECT_NAME}
+
+# clone this repo inside your folder
+degit vallafederico/...
+
+# install all base packages
+bun install
+
+# start the dev server
+bun dev
+```
+
 #### Capabilities
 
 ##### Baseline
@@ -107,6 +126,10 @@ You'll work inside the `src/` folder, and `app.js` is your main javascript entry
 
 If you'll use multiple files as entry point (ie one per page), after you've modified the config for that, you might want to rename your entry points accordingly (`home.js`, `about.js`, ...).
 
+Same goes for `.css` files and `styles/index.css`.
+
+You'll find some basic wasy of handling in the project itself.
+
 ---
 
 ### Api deployment
@@ -128,6 +151,8 @@ vercel dev
 ```
 
 Those will auto deploy when deploying to vercel.
+
+---
 
 ### Script Running
 
