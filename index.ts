@@ -6,7 +6,7 @@ import { CONFIG } from "./bin/config";
 // Keep track of the latest build result
 
 let currentBuildResult: any = null;
-const clients = new Set<WebSocket>();
+const clients = new Set<ServerWebSocket<unknown>>();
 
 // Separate build function
 async function rebuildFiles() {

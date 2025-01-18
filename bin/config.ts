@@ -4,8 +4,8 @@ export const CONFIG = {
   ENTRY_POINTS: ["src/app.js", "src/styles/index.css"],
 
   // Server configuration
-  SERVE_PORT: 3000,
-  SERVE_ORIGIN: `http://localhost:3000`,
+  SERVE_PORT: 6545,
+  SERVE_ORIGIN: `http://localhost:6545`,
 
   // Development features
   MINIFY: process.env.NODE_ENV === "production",
