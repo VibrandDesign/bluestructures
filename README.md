@@ -2,8 +2,7 @@
 
 My (as fast as it can get) dev setup for using big boys code inside of Webflow, bundling and css splitting, with live reload.
 
-<table><tr><td>
-This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone.</td></tr></table>
+_This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone._
 
 If you're interested in knowing more about the choices made, [check here](./docs/rationale.md).
 
@@ -29,6 +28,8 @@ bun install
 # start the dev server
 bun dev
 ```
+
+[Changelog](./docs/changelog.md)
 
 ## Usage
 
