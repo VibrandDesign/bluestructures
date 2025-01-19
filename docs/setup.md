@@ -2,7 +2,7 @@
 
 **Needs**
 
-A terminal (also the one inside VScode or something is fine). A code editor (VScode, Cursor, whatever). A vercel account.
+A **terminal** (also the one inside VScode or something is fine). A **code editor** (VScode, Cursor, whatever). A **vercel** account. A **github** account (ideally I'd link this to your code editor so it's easier to use).
 
 | **Package** | **Why**          | **???** |
 | ----------- | ---------------- | ------- |
