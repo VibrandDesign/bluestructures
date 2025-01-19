@@ -42,6 +42,19 @@ None of this things are done automatically, and expect you to write the code. Th
 
 Assuming you've followed the first [first install guide](./docs/setup.md), what follows are instructions for setting up every time you start a new project, and generally on how to use the project.
 
+<details>
+
+<summary> Multiple vs single entry points. </summary>
+This guide is focussed on the way I work, with a single entry point. I do this since I'm most of the time either doing a single page or using page transitions, so I want all my js and css to live in a single source.
+
+If this doesn't fit your needs, [here's some pointers on how to use with multiple entry points](./docs/multiple-entry-points.md).
+
+</details>
+
+Something that you might need to work with and understand is the `config.ts` file, that sets up how this thing operates. [Here's that.](./docs/config.md)
+
+You should almost never need this, but if you're curious about the inner workings and how this thing works, [look here](./docs/bin.md)
+
 ---
 
 ### Webflow Project Setup
@@ -79,9 +92,7 @@ To leverage CI/CD you'll have to deploy the website to vercel before going throu
 
 #### CSS
 
-> WATCH OUT! The setup for the file that's used inside the designer, since we can't use javascript in it, it's a bit wobbly. Meaning the two files will be active at the same time, and this can cause some issues. Here's what those are and how yu can fix those.
-
-Usually I use 2 additional stylesheet. One to be displayed in the designer, and one to be displayed only on the deployed website (ie to unhide preloader that block the view and stuffs).
+Usually I use 2 additional stylesheet. One to be displayed in the designer (`index.css`) and one to be displayed only on the deployed website (`out.css`), and that's why this is setup this way. You can add and modify your entrypoints as you please from the `config.ts` file.
 
 ```html
 <!-- this goes in the project settings, and it's not going to be active inside the designer -->
@@ -95,6 +106,8 @@ Usually I use 2 additional stylesheet. One to be displayed in the designer, and 
 <link rel="stylesheet" href="{YOUR VERCEL PROJECT URL}/styles/out.css" />
 <link rel="stylesheet" href="http://localhost:6545/styles/index.css" />
 ```
+
+> WATCH OUT! The setup for the file that's used inside the designer, since we can't use javascript in it, it's a bit wobbly. Meaning the two files will be active at the same time, and this can cause some issues. [Here's what those are and how you can fix those](./docs/css-issues.md).
 
 Congrats, you're (hopefully) now up and running.
 
@@ -121,17 +134,26 @@ and then import those in your files as recommended by the package.
 import { something } from "something";
 ```
 
-[Usage Examples]()
+[In depth examples](./docs/javascript.md)
 
-#### Concepts
+Same goes for `css` files. It'll auto refresh when changes are made, you can use `@import` rules and combine multiple files into single ones.
+
+#### Ideas
 
 You'll work inside the `src/` folder, and `app.js` is your main javascript entry points. You'll use this to import other scripts.
 
+<details>
+
+<summary> Multiple entry points </summary>
 If you'll use multiple files as entry point (ie one per page), after you've modified the config for that, you might want to rename your entry points accordingly (`home.js`, `about.js`, ...).
 
-Same goes for `.css` files and `styles/index.css`.
+Same things for CSS.
 
-You'll find some basic wasy of handling in the project itself.
+You'll want to modify those in the `bin/config.ts`.
+
+</details>
+
+Same goes for `.css` files and `styles/index.css`.
 
 ---
 
@@ -147,7 +169,7 @@ To run those locally.
 bun api
 ```
 
-To run those locally with vercel capabilities.
+To run those locally with vercel capabilities (recommended).
 
 ```shell
 vercel dev
