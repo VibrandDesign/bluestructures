@@ -1,52 +1,67 @@
-# Understand and fixing dual script CSS issues.
+# CSS Integration Guide
 
-Sadly I don't have a better solution. I was even thinking to make a chrome extension to handle the dual scripting capabilities but felt a bit overkill and personally I don't want to have to install more things than needed. I'll eventually make an Webflow app, but I'd prefer not to.
+## Understanding Dual Script CSS
 
-This is the CSS you'll want to have active inside the designer.
+Due to Webflow's limitations with JavaScript execution in certain contexts, we need a dual-script approach for CSS. While not ideal, this solution provides the best balance of functionality and simplicity.
+
+## Designer Setup
+
+Add these lines to your Webflow project:
 
 ```html
 <link rel="stylesheet" href="{YOUR VERCEL PROJECT URL}/styles/out.css" />
 <link rel="stylesheet" href="http://localhost:6545/styles/index.css" />
 ```
 
-Webflow doesn't allow us to execute javascript in here, so we can't make sure only a single script is active at a time.
+> **Note**: Webflow's JavaScript restrictions prevent us from implementing dynamic script switching.
 
-What's happening here is the first CSS file that's active is the one from your last live deployment, coming from vercel.
+## How It Works
 
-The second one is instead the one you're running from your terminal, the one you're writing at the moment.
+### File Priority
+
+1. The Vercel-deployed CSS loads first (production version)
+2. The local development CSS loads second (development version)
+
+### Example Scenarios
+
+#### Scenario 1: Property Override
 
 ```css
-/* deployed one */
-
+/* Production (Vercel) */
 .body {
   background-color: red;
 }
 
-/* local one */
-
+/* Development (Local) */
 .body {
   background-color: black;
 }
+
+/* Result: background will be black */
 ```
 
-In this example, the two files have a conflict, but it'll not be an issue even when actie at the same time. Since the same property is overridden by the last file, the background color will be black.
+#### Scenario 2: Commented Properties
 
 ```css
-/* deployed one */
-
+/* Production (Vercel) */
 .body {
   background-color: red;
 }
 
-/* local one */
-
+/* Development (Local) */
 .body {
   /* background-color: black; */
 }
+
+/* Result: background will be red */
 ```
 
-In this second example, the second background color is commented out. If you've set your background color in Webflow to blue, you might expect the body to honor that, but while your local script doesn't set the bg color anymore, the one you have deployed still will.
+## Troubleshooting
 
-To fix this, if you see some weird behaviour in your CSS, my suggestion would be 1. comment out all related styles, 2. push so the deployed file doesn't set anything, 3. make the changes you want to make in your local file.
+If you encounter styling conflicts:
 
-This way there will be no issues and you'll see exactly what you're getting.
+1. Comment out all related styles
+2. Deploy to clear production styles
+3. Reimplement styles in your local file
+
+This approach ensures clean style implementation without conflicts.
