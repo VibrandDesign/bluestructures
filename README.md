@@ -50,10 +50,9 @@ Assuming you've followed the first [first install guide](./docs/setup.md), what 
 
 <details>
 
-<summary>
+<summary> Deploy to Vercel </summary>
 To leverage CI/CD you'll have to deploy the website to vercel before going through this first section. Do it either via cli or by linking the project through the Vercel interface.
 
-<summary>
 </details>
 
 This is the script tag for our webflow project. My take is put it in the `head` code, and with the `defer` tag you'll (in most cases) get the best performance you can get.
