@@ -51,9 +51,7 @@ If this doesn't fit your needs, [here's some pointers on how to use with multipl
 
 </details>
 
-Something that you might need to work with and understand is the `config.ts` file, that sets up how this thing operates. [Here's that.](./docs/config.md)
-
-You should almost never need this, but if you're curious about the inner workings and how this thing works, [look here](./docs/bin.md)
+Something that you might need to work with and understand is the `config.ts` file, [that sets up how this thing operates](./docs/config.md)
 
 ---
 
@@ -184,3 +182,7 @@ Those will auto deploy when deploying to vercel.
 This is the setup to run scripts form your terminal. Again, do whatever. Good example is to run CMS migration from an old website (ie Wordpress), upload CMS items in one swoop.
 
 TBD
+
+---
+
+You should almost never need this, but if you're curious about the inner workings and how this thing works [look here](./docs/bin.md)
