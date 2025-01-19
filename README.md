@@ -8,7 +8,7 @@ _This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), b
 
 <details>
 
-<summary> **TLDR** </summary>
+<summary> TLDR </summary>
 
 ```shell
 # create folder for your new project
