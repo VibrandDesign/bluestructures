@@ -6,6 +6,8 @@ import { CONFIG } from "./config";
 
 // Keep track of the latest build result
 
+// console.log(process.env.NODE_ENV);
+
 let currentBuildResult: any = null;
 const clients = new Set<ServerWebSocket<unknown>>();
 

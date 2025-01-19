@@ -1,5 +1,7 @@
 import { CONFIG } from "./config";
 
+// console.log(process.env.NODE_ENV);
+
 async function build() {
   console.log("📦 Building production bundle...");
   try {
