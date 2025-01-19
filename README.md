@@ -4,13 +4,9 @@ My (as fast as it can get) dev setup for using big boys code inside of Webflow, 
 
 _This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone._
 
-If you're interested in knowing more about the choices made, [check here](./docs/rationale.md).
-
 **If you're setting up for the first time please [read these instructions](./docs/setup.md)**.
 
-`TLDR`
-
-Here's a set of commands you should run from yout project(s) folder to get up and running.
+**TLDR**
 
 ```shell
 # create folder for your new project
@@ -29,15 +25,24 @@ bun install
 bun dev
 ```
 
-[Changelog](./docs/changelog.md)
+[Changelog](./docs/changelog.md).
+
+[Rationale](./docs/rationale.md).
 
 ## Usage
 
-This is a place where you can write your code, have it deploy on webflow both in dev and in production. You'll install packages (instead of using CDNs), create a bundle and see it do its magic on your website.
+This is a local & deployed setup to write code in Webflow, from you code editor of choice. It automatically deploys to production for everyone to see, while allowing you to develop and see the changes you make without having to switch scritps. It makes it easy to bundle your packages and your code (instead of using CDNs), CSS included.
+It also automatically handles live reload for when the dev script is running, so that your website reloads on save.
+
+Supports deploying API routes if you ever need a server (think calling an API and creating CMS collections dinamically, scraping websites and generate content, ...).
+
+Finally enables scripts to be run locally from the same project. Useful for example for uploading loads of CMS items from a spreadsheet or a site migration from wordpress.
+
+None of this things are done automatically, and expect you to write the code. This is just the shell that makes it easy to dev, test and deploy.
 
 Assuming you've followed the first [first install guide](./docs/setup.md), what follows are instructions for setting up every time you start a new project, and generally on how to use the project.
 
----
+=
 
 ### Webflow Project Setup
 
