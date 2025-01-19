@@ -7,14 +7,17 @@ _Technically part of [TheCodeFlowCo](https://www.thecodeflow.co/) lessons but wa
 ## Quick Start
 
 ```bash
+# Create and enter project directory
+mkdir your-project && cd your-project
 
-mkdir your-project && cd your-project  # Create and enter project directory
+# Clone this repo
+degit vallafederico/webflow-dev-setup
 
-degit vallafederico/webflow-dev-setup  # Clone this repo
+# Install dependencies
+bun install
 
-bun install                            # Install dependencies
-
-bun dev                                # Start development
+# Start development
+bun dev
 ```
 
 ## Features
