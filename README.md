@@ -112,6 +112,10 @@ bin/                   # Build scripts
 docs/                  # Documentation
 ```
 
+## Important stuffs
+
+> **Note**: If you're not using any API routes, delete the api folder so you don't deploy random stuffs to vercel
+
 ## License
 
-MIT © [Federico Valla]
+This project is licensed under the [MIT License](./LICENSE) © [Federico Valla](https://github.com/vallafederico)
