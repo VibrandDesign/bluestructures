@@ -1,6 +1,6 @@
 # Webflow Developer Setup
 
-> A lightning-fast development setup for professional Webflow development with bundling, CSS splitting, and live reload.
+> As fast as it gets (thanks bun) development setup for Webflow development with bundling, CSS splitting, and live reload.
 
 _Part of [TheCodeFlowCo](https://www.thecodeflow.co/) lessons, shared for the community._
 
@@ -22,12 +22,12 @@ bun dev
 
 ## Features
 
-- 🚀 Local development with live reload
-- 📦 Automatic bundling of JS and CSS
-- 🔄 Seamless production deployment
-- 🛠️ API routes support
-- 💻 Local script execution
-- ⚡ Optimized for speed
+- Local development with live reload
+- Automatic bundling of JS and CSS
+- Seamless production deployment
+- API routes support
+- Local script execution
+- Optimized for speed
 
 ## Documentation
 
@@ -92,6 +92,12 @@ bun add pkg    # Install packages
 ```bash
 bun api        # Run API locally
 vercel dev     # Run with Vercel capabilities
+```
+
+### All (dev and APIs)
+
+```bash
+bun all        # Run both API and dev
 ```
 
 ## Advanced Topics
