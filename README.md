@@ -2,13 +2,16 @@
 
 My (as fast as it can get) dev setup for using big boys code inside of Webflow, bundling and css splitting, with live reload.
 
-This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone.
+<table><tr><td>
+This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone.</td></tr></table>
 
-**If you're setting up for the first time please [read these instructions](./docs/setup.md)**
+If you're interested in knowing more about the choices made, [check here](./docs/rationale.md).
 
-Here's a set of commands you should run from yout project(s) folder to get up and running.
+**If you're setting up for the first time please [read these instructions](./docs/setup.md)**.
 
 `TLDR`
+
+Here's a set of commands you should run from yout project(s) folder to get up and running.
 
 ```shell
 # create folder for your new project
@@ -26,10 +29,6 @@ bun install
 # start the dev server
 bun dev
 ```
-
-#### Rationale
-
-Development on webflow. Fast. Direct deployment, CI/CD. Both js and css. Live reload. Git Integration.
 
 ## Usage
 
