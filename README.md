@@ -4,30 +4,30 @@ My (as fast as it can get) dev setup for using big boys code inside of Webflow, 
 
 _This is part of the lessons for [TheCodeFlowCo](https://www.thecodeflow.co/), but it felt too good to not share with everyone._
 
-**If you're setting up for the first time please [read these instructions](./docs/setup.md)**.
+**If you're setting up for the first time please [read these instructions](./docs/setup.md)**
 
-**TLDR**
+<details>
+
+<summary> **TLDR** </summary>
 
 ```shell
 # create folder for your new project
 mkdir {PROJECT_NAME}
-
 # get into that folder
 cd {PROJECT_NAME}
-
 # clone this repo inside your folder
 degit vallafederico/...
-
 # install all base packages
 bun install
-
 # start the dev server
 bun dev
 ```
 
-[Changelog](./docs/changelog.md).
+</details>
 
-[Rationale](./docs/rationale.md).
+**[Changelog](./docs/changelog.md)**
+
+**[Rationale](./docs/rationale.md)**
 
 ## Usage
 
