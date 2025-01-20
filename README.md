@@ -2,7 +2,7 @@
 
 > As fast as it gets (thanks bun) development setup for Webflow development with bundling, CSS splitting, and live reload.
 
-_Technically part of [TheCodeFlowCo](https://www.thecodeflow.co/) lessons but was too got not to share 👀._
+_Technically part of [TheCodeFlowCo](https://www.thecodeflow.co/) lessons but was too good not to share 👀._
 
 ## Quick Start
 
