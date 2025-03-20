@@ -1,13 +1,12 @@
-import { something } from "@modules/something.js";
+import { createModules } from "./modules/_/create";
 
-// console.log(process.env.NODE_ENV);
+const modules = createModules();
+// console.log("---", modules);
 
 export class App {
   constructor() {
-    console.log("App3");
+    console.log("App2");
   }
 }
 
-// something();
-
-const app = new App();
+new App();

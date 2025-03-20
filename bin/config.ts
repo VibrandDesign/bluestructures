@@ -1,3 +1,5 @@
+import { globEagerPlugin } from "./plugins/glob";
+
 export const CONFIG = {
   bun: {
     entrypoints: ["src/app.js", "src/styles/index.css"],
@@ -7,6 +9,7 @@ export const CONFIG = {
     target: "browser",
     format: "iife",
     minify: process.env.NODE_ENV === "production",
+    plugins: [globEagerPlugin()],
   },
   // Build configuration
 
