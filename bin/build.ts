@@ -1,16 +1,12 @@
 import { CONFIG } from "./config";
-
+import type { BuildConfig } from "bun";
 // console.log(process.env.NODE_ENV);
 
 async function build() {
   console.log("📦 Building production bundle...");
   try {
     await Bun.build({
-      entrypoints: CONFIG.ENTRY_POINTS,
-      outdir: CONFIG.BUILD_DIRECTORY,
-      minify: CONFIG.MINIFY,
-      sourcemap: CONFIG.SOURCEMAP,
-      experimentalCss: CONFIG.EXPERIMENTAL_CSS,
+      ...(CONFIG.bun as BuildConfig),
     });
     console.log("✅ Build complete!");
   } catch (error) {

@@ -3,9 +3,9 @@ import { ServerWebSocket } from "bun";
 import { generateResponse } from "./generateResponse";
 import { liveReloadCode } from "./live-reload";
 import { CONFIG } from "./config";
+import type { BuildConfig } from "bun";
 
 // Keep track of the latest build result
-
 // console.log(process.env.NODE_ENV);
 
 let currentBuildResult: any = null;
@@ -16,13 +16,10 @@ async function rebuildFiles() {
   console.log("🔄 Rebuilding...");
   try {
     const result = await Bun.build({
-      entrypoints: CONFIG.ENTRY_POINTS,
-      outdir: CONFIG.BUILD_DIRECTORY,
-      experimentalCss: true,
-      sourcemap: "inline",
+      ...(CONFIG.bun as BuildConfig),
     });
 
-    // Inject live reload code into JS files
+    // Inject live reload code into JS files\
     for (const output of result.outputs) {
       if (output.path.endsWith(".js")) {
         const content = await Bun.file(output.path).text();
