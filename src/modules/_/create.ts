@@ -1,4 +1,3 @@
-// const modules = import.meta.glob(`../*.ts`, { eager: true });
 const modules = import.meta.glob("../*.ts", { eager: true });
 // console.log("modules -> []", modules);
 
