@@ -5,7 +5,7 @@ export const CONFIG = {
     entrypoints: ["src/app.js", "src/styles/index.css"],
     outdir: "dist",
     experimentalCss: true,
-    sourcemap: "inline",
+    sourcemap: "external",
     target: "browser",
     format: "iife",
     minify: process.env.NODE_ENV === "production",
