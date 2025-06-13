@@ -72,8 +72,42 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       <head>
         <title>Generated Files</title>
         <style>
-          body { font-family: system-ui; padding: 2rem; }
-          a { color: #0066cc; text-decoration: none; }
+          :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --link-color: #0066cc;
+            --code-bg: #f5f5f5;
+            --code-color: #666666;
+            --border-color: #dee2e6;
+            --notice-bg: #f8f9fa;
+            --notice-text: #495057;
+            --hover-bg: #e6ffe6;
+          }
+
+          @media (prefers-color-scheme: dark) {
+            :root {
+              --bg-color: #1a1a1a;
+              --text-color: #e0e0e0;
+              --link-color: #66b3ff;
+              --code-bg: #2d2d2d;
+              --code-color: #a0a0a0;
+              --border-color: #404040;
+              --notice-bg: #2d2d2d;
+              --notice-text: #e0e0e0;
+              --hover-bg: #1a331a;
+            }
+          }
+
+          body { 
+            font-family: system-ui; 
+            padding: 2rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+          }
+          a { 
+            color: var(--link-color); 
+            text-decoration: none; 
+          }
           a:hover { text-decoration: underline; }
           .main-link { font-weight: bold; }
           ul { list-style: none; padding: 0; }
@@ -85,14 +119,14 @@ function generateIndexHtml(outputs: BuildOutput[]) {
             display: block;
             margin-top: 0.25rem;
             font-size: 0.9em;
-            color: #666;
+            color: var(--code-color);
             font-family: monospace;
           }
           .script-tag a {
-            color: #0066cc;
+            color: var(--link-color);
           }
           .error-handler-box {
-            background-color: #f5f5f5;
+            background-color: var(--code-bg);
             padding: 1rem;
             border-radius: 4px;
             margin-top: 0.5rem;
@@ -100,37 +134,37 @@ function generateIndexHtml(outputs: BuildOutput[]) {
             transition: background-color 0.3s ease;
           }
           .error-handler-box.copied {
-            background-color: #e6ffe6;
+            background-color: var(--hover-bg);
           }
           .vercel-notice {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            background-color: var(--notice-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 12px 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             font-size: 0.9em;
-            color: #495057;
+            color: var(--notice-text);
             z-index: 1000;
             display: flex;
             align-items: center;
             gap: 10px;
           }
           .vercel-notice .icon {
-            color: #0066cc;
+            color: var(--link-color);
             font-size: 1.2em;
           }
           .vercel-notice .close {
             margin-left: 10px;
             cursor: pointer;
-            color: #6c757d;
+            color: var(--code-color);
             font-size: 1.2em;
             padding: 0 5px;
           }
           .vercel-notice .close:hover {
-            color: #343a40;
+            color: var(--text-color);
           }
         </style>
         <script>
