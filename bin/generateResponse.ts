@@ -18,11 +18,19 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;&lt;/script&gt;</code>
+        <code class="script-tag">&lt;script defer src="http://localhost:${
+          CONFIG.SERVE_PORT
+        }/${relativePath}"&gt;&lt;/script&gt;</code>
+        ${
+          process.env.VERCEL_URL
+            ? `
         <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
         <div class="error-handler-box">
           <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const script=document.createElement('script');script.src='${vercelUrl}/${relativePath}';script.defer='true';document.head.appendChild(script);})()"&gt;&lt;/script&gt;</code>
         </div>
+        `
+            : ""
+        }
       </li>`;
     })
     .join("\n");
@@ -33,11 +41,19 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;</code>
+        <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${
+          CONFIG.SERVE_PORT
+        }/${relativePath}"&gt;</code>
+        ${
+          process.env.VERCEL_URL
+            ? `
         <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
         <div class="error-handler-box">
           <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const link=document.createElement('link');link.rel='stylesheet';link.href='${vercelUrl}/${relativePath}';document.head.appendChild(link);})()"&gt;</code>
         </div>
+        `
+            : ""
+        }
       </li>`;
     })
     .join("\n");
@@ -86,6 +102,36 @@ function generateIndexHtml(outputs: BuildOutput[]) {
           .error-handler-box.copied {
             background-color: #e6ffe6;
           }
+          .vercel-notice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+            color: #495057;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+          .vercel-notice .icon {
+            color: #0066cc;
+            font-size: 1.2em;
+          }
+          .vercel-notice .close {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #6c757d;
+            font-size: 1.2em;
+            padding: 0 5px;
+          }
+          .vercel-notice .close:hover {
+            color: #343a40;
+          }
         </style>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
@@ -103,6 +149,17 @@ function generateIndexHtml(outputs: BuildOutput[]) {
                 }
               });
             });
+
+            // Add close functionality for the Vercel notice
+            const closeButton = document.querySelector('.vercel-notice .close');
+            if (closeButton) {
+              closeButton.addEventListener('click', () => {
+                const notice = document.querySelector('.vercel-notice');
+                if (notice) {
+                  notice.style.display = 'none';
+                }
+              });
+            }
           });
         </script>
       </head>
@@ -114,6 +171,12 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         <ul>${cssLinks}</ul>
         
         ${mapLinks ? `<h3>Source Maps:</h3><ul>${mapLinks}</ul>` : ""}
+
+        ${
+          !process.env.VERCEL_URL
+            ? '<div class="vercel-notice"><span class="icon">&#9432;</span><span>Add VERCEL_URL to your .env file for full CI/CD functionality</span><span class="close">&#10005;</span></div>'
+            : ""
+        }
       </body>
     </html>
   `;
