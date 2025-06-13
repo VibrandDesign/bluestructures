@@ -10,15 +10,16 @@ async function build() {
       ...(CONFIG.bun as BuildConfig),
     });
 
+    console.log("result -> []", result);
+
     // Build CSS files separately
     const cssResult = await Bun.build({
       entrypoints: CONFIG.css.entrypoints,
       outdir: "dist",
+      experimentalCss: true,
       sourcemap: "external",
       target: "browser",
-      minify: process.env.NODE_ENV === "production",
-      experimentalCss: true,
-    });
+    } as BuildConfig);
 
     console.log("✅ Build complete!");
 

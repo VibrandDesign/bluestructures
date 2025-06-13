@@ -15,9 +15,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
     .map((output) => {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
-        <a href="/${relativePath}" target="_blank">${relativePath}</a>
+        <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;script defer src="http://localhost:3000/${relativePath}"&gt;&lt;/script&gt;</code>
-        <code class="script-tag">&lt;script defer src="${vercelUrl}/${relativePath}"&gt;&lt;/script&gt;</code>
+        <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
       </li>`;
     })
     .join("\n");
@@ -27,9 +27,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
     .map((output) => {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
-        <a href="/${relativePath}" target="_blank">${relativePath}</a>
+        <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:3000/${relativePath}"&gt;</code>
-        <code class="script-tag">&lt;link rel="stylesheet" href="${vercelUrl}/${relativePath}"&gt;</code>
+        <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
       </li>`;
     })
     .join("\n");
@@ -38,7 +38,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
     .filter((output) => output.path.endsWith(".js.map"))
     .map((output) => {
       const relativePath = output.path.split("/dist/")[1];
-      return `<li class="map-file"><a href="/${relativePath}" target="_blank">${relativePath}</a></li>`;
+      return `<li class="map-file"><a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a></li>`;
     })
     .join("\n");
 
@@ -51,6 +51,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
           body { font-family: system-ui; padding: 2rem; }
           a { color: #0066cc; text-decoration: none; }
           a:hover { text-decoration: underline; }
+          .main-link { font-weight: bold; }
           ul { list-style: none; padding: 0; }
           li { margin: 0.5rem 0; }
           .map-file { font-size: 0.8em; opacity: 0.5; }
@@ -62,6 +63,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
             font-size: 0.9em;
             color: #666;
             font-family: monospace;
+          }
+          .script-tag a {
+            color: #0066cc;
           }
         </style>
       </head>
