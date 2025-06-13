@@ -15,15 +15,13 @@ async function deploy() {
   const data = await res.json();
   console.log(data);
 
-  /*
-    job: {
-    id: "B4ApVubg9E1DES17qQ8t",
-    state: "PENDING",
-    createdAt: 1746022973310,
-  },
-  */
-
-  // need to loop until the job is deployed
+  if (process.env.VERCEL_URL) {
+    const url = process.env.VERCEL_URL.startsWith("http")
+      ? process.env.VERCEL_URL
+      : `https://${process.env.VERCEL_URL}`;
+    console.log(`\nDeployment URL: ${url}`);
+    console.log("Check the build progress at the URL above");
+  }
 }
 
 deploy();
