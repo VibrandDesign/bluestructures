@@ -17,7 +17,7 @@ export const CONFIG = {
   bun: {
     entrypoints: [...(appFile ? [appFile] : []), ...pages],
     outdir: "dist",
-    experimentalCss: true,
+    // experimentalCss: true,
     sourcemap: "external",
     target: "browser",
     format: "iife",

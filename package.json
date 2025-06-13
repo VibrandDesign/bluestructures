@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "bun --watch run bin/dev.ts",
     "bundle": "NODE_ENV=production bun run bin/build.ts",
+    "build": "NODE_ENV=production bun run bin/build.ts",
     "api": "bun --watch run bin/api.ts",
     "all": "bun run bin/all.ts",
     "deploy": "bun run bin/deploy.ts"
