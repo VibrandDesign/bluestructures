@@ -25,7 +25,7 @@ export const CONFIG = {
     plugins: [globEagerPlugin()],
   },
   css: {
-    entrypoints: ["src/styles/index.css", "src/styles/out.css"],
+    entrypoints: ["src/styles/app.css", "src/styles/out.css"],
   },
   // Server Info for websocket
   SERVE_PORT: 6545,
