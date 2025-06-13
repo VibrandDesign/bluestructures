@@ -36,11 +36,20 @@ async function rebuildFiles() {
     for (const output of result.outputs) {
       if (output.path.endsWith(".js")) {
         const content = await Bun.file(output.path).text();
+        const vercelUrl = process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : null;
+        const liveReloadUrls = vercelUrl
+          ? `[${CONFIG.SERVE_ORIGIN}, "${vercelUrl}"]`
+          : CONFIG.SERVE_ORIGIN;
+
         await Bun.write(
           output.path,
           content +
             "\n" +
-            liveReloadCode.replace("PORT_NUMBER", CONFIG.SERVE_PORT.toString())
+            liveReloadCode
+              .replace("PORT_NUMBER", CONFIG.SERVE_PORT.toString())
+              .replace("ORIGIN_URL", liveReloadUrls)
         );
       }
     }

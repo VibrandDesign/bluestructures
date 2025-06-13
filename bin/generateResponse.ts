@@ -3,6 +3,10 @@ interface BuildOutput {
 }
 
 function generateIndexHtml(outputs: BuildOutput[]) {
+  const vercelUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "{NO VERCEL URL}";
+
   const jsLinks = outputs
     .filter(
       (output) =>
@@ -13,6 +17,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       return `<li>
         <a href="/${relativePath}" target="_blank">${relativePath}</a>
         <code class="script-tag">&lt;script defer src="http://localhost:3000/${relativePath}"&gt;&lt;/script&gt;</code>
+        <code class="script-tag">&lt;script defer src="${vercelUrl}/${relativePath}"&gt;&lt;/script&gt;</code>
       </li>`;
     })
     .join("\n");
@@ -24,6 +29,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       return `<li>
         <a href="/${relativePath}" target="_blank">${relativePath}</a>
         <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:3000/${relativePath}"&gt;</code>
+        <code class="script-tag">&lt;link rel="stylesheet" href="${vercelUrl}/${relativePath}"&gt;</code>
       </li>`;
     })
     .join("\n");
