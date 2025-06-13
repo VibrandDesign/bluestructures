@@ -39,17 +39,17 @@ async function rebuildFiles() {
         const vercelUrl = process.env.VERCEL_URL
           ? `https://${process.env.VERCEL_URL}`
           : null;
-        const liveReloadUrls = vercelUrl
-          ? `[${CONFIG.SERVE_ORIGIN}, "${vercelUrl}"]`
-          : CONFIG.SERVE_ORIGIN;
+        const liveReloadUrls = `"${CONFIG.SERVE_ORIGIN}"`;
 
         await Bun.write(
           output.path,
           content +
-            "\n" +
-            liveReloadCode
-              .replace("PORT_NUMBER", CONFIG.SERVE_PORT.toString())
-              .replace("ORIGIN_URL", liveReloadUrls)
+            (process.env.NODE_ENV !== "production"
+              ? "\n" +
+                liveReloadCode
+                  .replace("PORT_NUMBER", CONFIG.SERVE_PORT.toString())
+                  .replace("ORIGIN_URL", liveReloadUrls)
+              : "")
         );
       }
     }
