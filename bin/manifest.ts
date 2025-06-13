@@ -23,6 +23,7 @@ interface BuildManifest {
     files: BuildOutput[];
   };
   distFiles: DistFile[];
+  sourceMaps: DistFile[];
 }
 
 function getDistFiles(distPath: string): DistFile[] {
@@ -53,11 +54,23 @@ function getDistFiles(distPath: string): DistFile[] {
   return files;
 }
 
+function separateSourceMaps(files: DistFile[]): {
+  sourceMaps: DistFile[];
+  otherFiles: DistFile[];
+} {
+  return {
+    sourceMaps: files.filter((file) => file.path.endsWith(".map")),
+    otherFiles: files.filter((file) => !file.path.endsWith(".map")),
+  };
+}
+
 export function generateBuildManifest(
   jsResult: any,
   cssResult: any
 ): BuildManifest {
   const distPath = join(process.cwd(), "dist");
+  const allFiles = getDistFiles(distPath);
+  const { sourceMaps, otherFiles } = separateSourceMaps(allFiles);
 
   return {
     timestamp: new Date().toISOString(),
@@ -75,7 +88,8 @@ export function generateBuildManifest(
         type: output.type,
       })),
     },
-    distFiles: getDistFiles(distPath),
+    distFiles: otherFiles,
+    sourceMaps: sourceMaps,
   };
 }
 
@@ -155,33 +169,68 @@ export function saveManifestFiles(manifest: BuildManifest) {
             color: #666;
             font-size: 0.9rem;
         }
+        .section {
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
     <h1>Build Manifest</h1>
     <div class="timestamp">Generated at: ${new Date().toLocaleString()}</div>
     
-    <h2>All Files in Dist Directory</h2>
-    <div class="file-list">
-        ${manifest.distFiles
-          .map(
-            (file) => `
-            <div class="file-item">
-                <a href="${file.path}" target="_blank" class="file-path">${
-              file.path
-            }</a>
-                <span class="file-info">
-                    ${(file.size / 1024).toFixed(2)} KB • 
-                    ${file.type.toUpperCase()} • 
-                    Last modified: ${new Date(
-                      file.lastModified
-                    ).toLocaleString()}
-                </span>
-            </div>
-        `
-          )
-          .join("")}
+    <div class="section">
+        <h2>Generated Files</h2>
+        <div class="file-list">
+            ${manifest.distFiles
+              .map(
+                (file) => `
+                <div class="file-item">
+                    <a href="${file.path}" target="_blank" class="file-path">${
+                  file.path
+                }</a>
+                    <span class="file-info">
+                        ${(file.size / 1024).toFixed(2)} KB • 
+                        ${file.type.toUpperCase()} • 
+                        Last modified: ${new Date(
+                          file.lastModified
+                        ).toLocaleString()}
+                    </span>
+                </div>
+            `
+              )
+              .join("")}
+        </div>
     </div>
+
+    ${
+      manifest.sourceMaps.length > 0
+        ? `
+    <div class="section">
+        <h2>Source Maps</h2>
+        <div class="file-list">
+            ${manifest.sourceMaps
+              .map(
+                (file) => `
+                <div class="file-item">
+                    <a href="${file.path}" target="_blank" class="file-path">${
+                  file.path
+                }</a>
+                    <span class="file-info">
+                        ${(file.size / 1024).toFixed(2)} KB • 
+                        ${file.type.toUpperCase()} • 
+                        Last modified: ${new Date(
+                          file.lastModified
+                        ).toLocaleString()}
+                    </span>
+                </div>
+            `
+              )
+              .join("")}
+        </div>
+    </div>
+    `
+        : ""
+    }
 
     <h2>Full Manifest</h2>
     <pre>${JSON.stringify(manifest, null, 2)}</pre>
