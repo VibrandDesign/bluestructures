@@ -35,6 +35,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;</code>
         <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
+        <div class="error-handler-box">
+          <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const link=document.createElement('link');link.rel='stylesheet';link.href='${vercelUrl}/${relativePath}';document.head.appendChild(link);})()"&gt;</code>
+        </div>
       </li>`;
     })
     .join("\n");
@@ -77,8 +80,31 @@ function generateIndexHtml(outputs: BuildOutput[]) {
             padding: 1rem;
             border-radius: 4px;
             margin-top: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          .error-handler-box.copied {
+            background-color: #e6ffe6;
           }
         </style>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.error-handler-box').forEach(box => {
+              box.addEventListener('click', async () => {
+                const code = box.querySelector('code').textContent;
+                try {
+                  await navigator.clipboard.writeText(code);
+                  box.classList.add('copied');
+                  setTimeout(() => {
+                    box.classList.remove('copied');
+                  }, 1000);
+                } catch (err) {
+                  console.error('Failed to copy text: ', err);
+                }
+              });
+            });
+          });
+        </script>
       </head>
       <body>
         <h2>JavaScript Files:</h2>
