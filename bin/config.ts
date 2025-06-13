@@ -3,6 +3,8 @@ import { getPageFiles } from "./pages";
 import { existsSync } from "fs";
 import { resolve } from "path";
 
+const cssEntrypoints = ["src/styles/app.css", "src/styles/out.css"];
+
 const appFile = existsSync(resolve("src/app.ts"))
   ? "src/app.ts"
   : existsSync(resolve("src/app.js"))
@@ -17,7 +19,6 @@ export const CONFIG = {
   bun: {
     entrypoints: [...(appFile ? [appFile] : []), ...pages],
     outdir: "dist",
-    // experimentalCss: true,
     sourcemap: "external",
     target: "browser",
     format: "iife",
@@ -25,7 +26,7 @@ export const CONFIG = {
     plugins: [globEagerPlugin()],
   },
   css: {
-    entrypoints: ["src/styles/app.css", "src/styles/out.css"],
+    entrypoints: cssEntrypoints,
   },
   // Server Info for websocket
   SERVE_PORT: 6545,

@@ -22,5 +22,8 @@
     "onlyBuiltDependencies": [
       "bun"
     ]
+  },
+  "dependencies": {
+    "gsap": "^3.13.0"
   }
 }
