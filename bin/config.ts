@@ -3,27 +3,19 @@ import { getPageFiles } from "./pages";
 import { existsSync } from "fs";
 import { resolve } from "path";
 
-const entries = getPageFiles().map((page) => {
-  return `src/pages/${page}`;
-});
-
-// console.log("entries -> []", entries);
-
 const appFile = existsSync(resolve("src/app.ts"))
   ? "src/app.ts"
   : existsSync(resolve("src/app.js"))
   ? "src/app.js"
   : null;
 
+const pages = getPageFiles().map((page) => {
+  return `src/pages/${page}`;
+});
+
 export const CONFIG = {
   bun: {
-    entrypoints: [
-      ...(appFile ? [appFile] : []),
-      // "src/styles/index.css",
-      // "src/styles/out.css",
-      ...entries,
-      // "src/pages/info.js",
-    ],
+    entrypoints: [...(appFile ? [appFile] : []), ...pages],
     outdir: "dist",
     experimentalCss: true,
     sourcemap: "external",
