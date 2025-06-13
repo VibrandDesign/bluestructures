@@ -8,9 +8,6 @@ import { existsSync } from "fs";
 import { resolve } from "path";
 import { getPageFiles } from "./pages";
 
-// Keep track of the latest build result
-// console.log(process.env.NODE_ENV);
-
 let currentBuildResult: any = null;
 const clients = new Set<ServerWebSocket<unknown>>();
 
@@ -27,7 +24,7 @@ async function rebuildFiles() {
     const cssResult = await Bun.build({
       entrypoints: CONFIG.css.entrypoints,
       outdir: "dist",
-      // experimentalCss: true,
+      experimentalCss: true,
       sourcemap: "external",
       target: "browser",
     } as BuildConfig);

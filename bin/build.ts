@@ -16,7 +16,7 @@ async function build() {
     const cssResult = await Bun.build({
       entrypoints: CONFIG.css.entrypoints,
       outdir: "dist",
-      // experimentalCss: true,
+      experimentalCss: true,
       sourcemap: "external",
       target: "browser",
     } as BuildConfig);
