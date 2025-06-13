@@ -19,9 +19,10 @@ export const CONFIG = {
   bun: {
     entrypoints: [
       ...(appFile ? [appFile] : []),
-      "src/styles/index.css",
-      "src/styles/out.css",
+      // "src/styles/index.css",
+      // "src/styles/out.css",
       ...entries,
+      // "src/pages/info.js",
     ],
     outdir: "dist",
     experimentalCss: true,
@@ -31,7 +32,9 @@ export const CONFIG = {
     minify: process.env.NODE_ENV === "production",
     plugins: [globEagerPlugin()],
   },
-
+  css: {
+    entrypoints: ["src/styles/index.css", "src/styles/out.css"],
+  },
   // Server Info for websocket
   SERVE_PORT: 6545,
   SERVE_ORIGIN: `http://localhost:6545`,

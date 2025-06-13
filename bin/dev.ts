@@ -15,11 +15,21 @@ const clients = new Set<ServerWebSocket<unknown>>();
 async function rebuildFiles() {
   console.log("🔄 Rebuilding...");
   try {
+    // Build JS files
     const result = await Bun.build({
       ...(CONFIG.bun as BuildConfig),
     });
 
-    // Inject live reload code into JS files\
+    // Build CSS files separately
+    const cssResult = await Bun.build({
+      entrypoints: CONFIG.css.entrypoints,
+      outdir: "dist",
+      experimentalCss: true,
+      sourcemap: "external",
+      target: "browser",
+    });
+
+    // Process JS files
     for (const output of result.outputs) {
       if (output.path.endsWith(".js")) {
         const content = await Bun.file(output.path).text();
@@ -32,7 +42,7 @@ async function rebuildFiles() {
       }
     }
 
-    currentBuildResult = result;
+    currentBuildResult = { outputs: [...result.outputs, ...cssResult.outputs] };
     clients.forEach((client) => client.send("reload"));
     console.log("✅ Build complete");
   } catch (error) {

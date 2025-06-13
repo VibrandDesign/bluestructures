@@ -5,9 +5,20 @@ import type { BuildConfig } from "bun";
 async function build() {
   console.log("📦 Building production bundle...");
   try {
-    await Bun.build({
+    // Build JS files
+    const result = await Bun.build({
       ...(CONFIG.bun as BuildConfig),
     });
+
+    // Build CSS files separately
+    const cssResult = await Bun.build({
+      entrypoints: CONFIG.css.entrypoints,
+      outdir: "dist",
+      experimentalCss: true,
+      sourcemap: "external",
+      target: "browser",
+    });
+
     console.log("✅ Build complete!");
   } catch (error) {
     console.error("❌ Build failed:", error);
