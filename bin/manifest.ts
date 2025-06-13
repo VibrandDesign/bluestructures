@@ -96,11 +96,7 @@ export function generateBuildManifest(
   };
 }
 
-function formatDuration(ms: number): string {
-  if (ms < 1000) {
-    return `${ms}ms`;
-  }
-  const seconds = Math.floor(ms / 1000);
+function formatDuration(seconds: number): string {
   if (seconds < 60) {
     return `${seconds}s`;
   }

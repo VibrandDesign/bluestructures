@@ -23,7 +23,7 @@ async function build() {
       target: "browser",
     } as BuildConfig);
 
-    const buildDuration = Date.now() - startTime;
+    const buildDuration = Math.floor((Date.now() - startTime) / 1000);
     console.log("✅ Build complete!");
 
     // Log all generated files
