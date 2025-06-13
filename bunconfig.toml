@@ -1,1 +1,9 @@
 preload = ["bin/plugins/glob.ts"]
+
+[build]
+entrypoints = ["./src/app.ts", "./src/pages/**/*.ts"]
+outdir = "./dist"
+minify = true
+target = "browser"
+format = "iife"
+sourcemap = "external"
