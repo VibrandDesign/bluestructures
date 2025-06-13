@@ -1,7 +1,6 @@
 import { CONFIG } from "./config";
 import type { BuildConfig } from "bun";
 import { generateBuildManifest, saveManifestFiles } from "./manifest";
-// console.log(process.env.NODE_ENV);
 
 async function build() {
   const startTime = Date.now();
@@ -21,6 +20,7 @@ async function build() {
       experimentalCss: true,
       sourcemap: "external",
       target: "browser",
+      minify: true,
     } as BuildConfig);
 
     const buildDuration = Date.now() - startTime;
