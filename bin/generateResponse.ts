@@ -20,6 +20,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;&lt;/script&gt;</code>
         <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
+        <div class="error-handler-box">
+          <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const script=document.createElement('script');script.src='${vercelUrl}/${relativePath}';script.defer='true';document.head.appendChild(script);})()"&gt;&lt;/script&gt;</code>
+        </div>
       </li>`;
     })
     .join("\n");
@@ -68,6 +71,12 @@ function generateIndexHtml(outputs: BuildOutput[]) {
           }
           .script-tag a {
             color: #0066cc;
+          }
+          .error-handler-box {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
           }
         </style>
       </head>
