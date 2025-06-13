@@ -140,6 +140,10 @@ export function saveManifestFiles(manifest: BuildManifest) {
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
+        .relative-time {
+            color: #0066cc;
+            font-weight: 500;
+        }
         .file-list {
             background-color: #fff;
             padding: 1.5rem;
@@ -176,7 +180,10 @@ export function saveManifestFiles(manifest: BuildManifest) {
 </head>
 <body>
     <h1>Build Manifest</h1>
-    <div class="timestamp">Generated at: ${new Date().toLocaleString()}</div>
+    <div class="timestamp">
+        Generated at: ${new Date().toLocaleString()}
+        <span class="relative-time" id="relativeTime"></span>
+    </div>
     
     <div class="section">
         <h2>Generated Files</h2>
@@ -234,6 +241,34 @@ export function saveManifestFiles(manifest: BuildManifest) {
 
     <h2>Full Manifest</h2>
     <pre>${JSON.stringify(manifest, null, 2)}</pre>
+
+    <script>
+        function updateRelativeTime() {
+            const buildTime = new Date("${manifest.timestamp}");
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - buildTime) / 1000);
+            
+            let relativeTime;
+            if (diffInSeconds < 60) {
+                relativeTime = 'just now';
+            } else if (diffInSeconds < 3600) {
+                const minutes = Math.floor(diffInSeconds / 60);
+                relativeTime = \`\${minutes} minute\${minutes === 1 ? '' : 's'} ago\`;
+            } else if (diffInSeconds < 86400) {
+                const hours = Math.floor(diffInSeconds / 3600);
+                relativeTime = \`\${hours} hour\${hours === 1 ? '' : 's'} ago\`;
+            } else {
+                const days = Math.floor(diffInSeconds / 86400);
+                relativeTime = \`\${days} day\${days === 1 ? '' : 's'} ago\`;
+            }
+            
+            document.getElementById('relativeTime').textContent = \` • \${relativeTime}\`;
+        }
+
+        // Update immediately and then every minute
+        updateRelativeTime();
+        setInterval(updateRelativeTime, 60000);
+    </script>
 </body>
 </html>`;
 
