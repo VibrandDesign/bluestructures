@@ -4,6 +4,7 @@ import { generateBuildManifest, saveManifestFiles } from "./manifest";
 // console.log(process.env.NODE_ENV);
 
 async function build() {
+  const startTime = Date.now();
   console.log("📦 Building production bundle...");
   try {
     // Build JS files
@@ -22,6 +23,7 @@ async function build() {
       target: "browser",
     } as BuildConfig);
 
+    const buildDuration = Date.now() - startTime;
     console.log("✅ Build complete!");
 
     // Log all generated files
@@ -37,7 +39,7 @@ async function build() {
     }
 
     // Generate and save manifest files
-    const manifest = generateBuildManifest(result, cssResult);
+    const manifest = generateBuildManifest(result, cssResult, buildDuration);
     saveManifestFiles(manifest);
   } catch (error) {
     console.error("❌ Build failed:", error);

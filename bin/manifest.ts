@@ -16,6 +16,7 @@ interface DistFile {
 
 interface BuildManifest {
   timestamp: string;
+  buildDuration: number;
   javascript: {
     files: BuildOutput[];
   };
@@ -66,7 +67,8 @@ function separateSourceMaps(files: DistFile[]): {
 
 export function generateBuildManifest(
   jsResult: any,
-  cssResult: any
+  cssResult: any,
+  buildDuration: number
 ): BuildManifest {
   const distPath = join(process.cwd(), "dist");
   const allFiles = getDistFiles(distPath);
@@ -74,6 +76,7 @@ export function generateBuildManifest(
 
   return {
     timestamp: new Date().toISOString(),
+    buildDuration,
     javascript: {
       files: Array.from(jsResult.outputs.values()).map((output: any) => ({
         path: output.path,
@@ -91,6 +94,19 @@ export function generateBuildManifest(
     distFiles: otherFiles,
     sourceMaps: sourceMaps,
   };
+}
+
+function formatDuration(ms: number): string {
+  if (ms < 1000) {
+    return `${ms}ms`;
+  }
+  const seconds = Math.floor(ms / 1000);
+  if (seconds < 60) {
+    return `${seconds}s`;
+  }
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}m ${remainingSeconds}s`;
 }
 
 export function saveManifestFiles(manifest: BuildManifest) {
@@ -144,6 +160,10 @@ export function saveManifestFiles(manifest: BuildManifest) {
             color: #0066cc;
             font-weight: 500;
         }
+        .build-duration {
+            color: #28a745;
+            font-weight: 500;
+        }
         .file-list {
             background-color: #fff;
             padding: 1.5rem;
@@ -183,6 +203,9 @@ export function saveManifestFiles(manifest: BuildManifest) {
     <div class="timestamp">
         Generated at: ${new Date().toLocaleString()}
         <span class="relative-time" id="relativeTime"></span>
+        <span class="build-duration"> • Build duration: ${formatDuration(
+          manifest.buildDuration
+        )}</span>
     </div>
     
     <div class="section">
