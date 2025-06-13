@@ -4,6 +4,9 @@ import { generateResponse } from "./generateResponse";
 import { liveReloadCode } from "./live-reload";
 import { CONFIG } from "./config";
 import type { BuildConfig } from "bun";
+import { existsSync } from "fs";
+import { resolve } from "path";
+import { getPageFiles } from "./pages";
 
 // Keep track of the latest build result
 // console.log(process.env.NODE_ENV);
@@ -27,7 +30,7 @@ async function rebuildFiles() {
       experimentalCss: true,
       sourcemap: "external",
       target: "browser",
-    });
+    } as BuildConfig);
 
     // Process JS files
     for (const output of result.outputs) {
@@ -47,6 +50,10 @@ async function rebuildFiles() {
     console.log("✅ Build complete");
   } catch (error) {
     console.error("❌ Build failed:", error);
+    // Keep the previous build result if the new build fails
+    if (!currentBuildResult) {
+      throw error; // Only throw if we don't have a previous build
+    }
   }
 }
 
@@ -68,10 +75,10 @@ const server = Bun.serve({
     return generateResponse(url.pathname, currentBuildResult?.outputs || []);
   },
   websocket: {
-    open(ws) {
+    open(ws: ServerWebSocket<unknown>) {
       clients.add(ws);
     },
-    close(ws) {
+    close(ws: ServerWebSocket<unknown>) {
       clients.delete(ws);
     },
     message() {},
@@ -82,8 +89,32 @@ console.log(`Server running at ${CONFIG.SERVE_ORIGIN}`);
 
 // Watch for changes and only rebuild
 watch("src", { recursive: true }, async (event, filename) => {
+  if (!filename) return;
+
   console.log(`File ${filename} has been ${event}`);
-  await rebuildFiles();
+
+  // If the change is in the pages directory, we need to update the page list
+  if (filename.startsWith("pages/")) {
+    // Update the CONFIG.bun.entrypoints with the new page list
+    const appFile = existsSync(resolve("src/app.ts"))
+      ? "src/app.ts"
+      : existsSync(resolve("src/app.js"))
+      ? "src/app.js"
+      : null;
+
+    const pages = getPageFiles().map((page) => {
+      return `src/pages/${page}`;
+    });
+
+    CONFIG.bun.entrypoints = [...(appFile ? [appFile] : []), ...pages];
+  }
+
+  try {
+    await rebuildFiles();
+  } catch (error) {
+    console.error("❌ Build failed:", error);
+    // Don't crash the server, just log the error
+  }
 });
 
 // Initial build

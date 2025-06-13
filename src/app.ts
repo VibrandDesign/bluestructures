@@ -2,13 +2,12 @@ import { createModules } from "./modules/_/create";
 
 class App {
   constructor() {
-    console.log("Single App File", performance.now());
+    console.log("app.js/ts::", performance.now());
     this.init();
   }
 
   init() {
     const modules = createModules();
-    console.log("modules -> []", modules);
   }
 }
 
