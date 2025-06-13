@@ -1,5 +1,5 @@
 export class Hello {
-  constructor() {
-    console.log("Hello");
+  constructor(element: HTMLElement) {
+    console.log("Hello", element);
   }
 }

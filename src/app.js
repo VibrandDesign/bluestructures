@@ -1,11 +1,13 @@
 import { createModules } from "./modules/_/create";
 
-const modules = createModules();
-// console.log("---", modules);
-
 export class App {
   constructor() {
-    console.log("App2");
+    console.log("Single App File", performance.now());
+    this.init();
+  }
+
+  init() {
+    const modules = createModules();
   }
 }
 

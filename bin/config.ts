@@ -2,7 +2,7 @@ import { globEagerPlugin } from "./plugins/glob";
 
 export const CONFIG = {
   bun: {
-    entrypoints: ["src/app.js", "src/styles/index.css"],
+    entrypoints: ["src/app.js", "src/styles/index.css", "src/styles/out.css"],
     outdir: "dist",
     experimentalCss: true,
     sourcemap: "external",
