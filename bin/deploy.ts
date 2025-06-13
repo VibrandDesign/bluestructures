@@ -1,6 +1,6 @@
 async function deploy() {
   if (!process.env.VERCEL_DEPLOY_HOOK) {
-    console.log("VERCEL_DEPLOY_HOOK is not set");
+    console.log("VERCEL_DEPLOY_HOOK is not set. Set it in the .env file");
     return;
   }
 
