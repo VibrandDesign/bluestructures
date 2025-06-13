@@ -17,6 +17,7 @@ async function build() {
       sourcemap: "external",
       target: "browser",
       minify: process.env.NODE_ENV === "production",
+      experimentalCss: true,
     });
 
     console.log("✅ Build complete!");
