@@ -144,6 +144,12 @@ export function saveManifestFiles(manifest: BuildManifest) {
         .file-path {
             font-family: monospace;
             color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .file-path:hover {
+            color: #004499;
+            text-decoration: underline;
         }
         .file-info {
             color: #666;
@@ -161,7 +167,9 @@ export function saveManifestFiles(manifest: BuildManifest) {
           .map(
             (file) => `
             <div class="file-item">
-                <span class="file-path">${file.path}</span>
+                <a href="${file.path}" target="_blank" class="file-path">${
+              file.path
+            }</a>
                 <span class="file-info">
                     ${(file.size / 1024).toFixed(2)} KB • 
                     ${file.type.toUpperCase()} • 
