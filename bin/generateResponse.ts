@@ -1,3 +1,5 @@
+import { CONFIG } from "./config";
+
 interface BuildOutput {
   path: string;
 }
@@ -16,7 +18,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;script defer src="http://localhost:3000/${relativePath}"&gt;&lt;/script&gt;</code>
+        <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;&lt;/script&gt;</code>
         <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
       </li>`;
     })
@@ -28,7 +30,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:3000/${relativePath}"&gt;</code>
+        <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}"&gt;</code>
         <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
       </li>`;
     })
