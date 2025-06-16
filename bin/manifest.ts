@@ -40,6 +40,10 @@ function getDistFiles(distPath: string): DistFile[] {
     for (const entry of entries) {
       const fullPath = join(dir, entry.name);
 
+      if (entry.isDirectory() && entry.name === "public") {
+        continue;
+      }
+
       if (entry.isDirectory()) {
         scanDirectory(fullPath);
       } else {
