@@ -15,10 +15,28 @@ const clients = new Set<ServerWebSocket<unknown>>();
 // Add SSL configuration
 const useSSL = process.env.USE_SSL === "true";
 const ssl = useSSL
-  ? {
-      key: readFileSync(resolve("./certs/localhost-key.pem")),
-      cert: readFileSync(resolve("./certs/localhost.pem")),
-    }
+  ? (() => {
+      const keyPath = resolve("./certs/localhost-key.pem");
+      const certPath = resolve("./certs/localhost.pem");
+
+      if (!existsSync(keyPath) || !existsSync(certPath)) {
+        console.error("\n❌ SSL certificates not found!");
+        console.error("To use SSL, you need to generate certificates first.");
+        console.error("You can generate them using mkcert:");
+        console.error(
+          "1. Install mkcert: https://github.com/FiloSottile/mkcert"
+        );
+        console.error("2. Run: mkcert -install");
+        console.error("3. Run: mkcert localhost");
+        console.error("4. Move the generated files to ./certs/ directory\n");
+        process.exit(1);
+      }
+
+      return {
+        key: readFileSync(keyPath),
+        cert: readFileSync(certPath),
+      };
+    })()
   : undefined;
 
 // Separate build function
