@@ -11,9 +11,6 @@ importers:
       gsap:
         specifier: ^3.13.0
         version: 3.13.0
-      mkcert:
-        specifier: ^3.2.0
-        version: 3.2.0
       typescript:
         specifier: ^5.7.3
         version: 5.8.3
@@ -24,6 +21,9 @@ importers:
       bun-types:
         specifier: latest
         version: 1.2.5
+      mkcert:
+        specifier: ^3.2.0
+        version: 3.2.0
 
 packages:
 
