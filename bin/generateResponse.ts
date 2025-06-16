@@ -9,6 +9,9 @@ function generateIndexHtml(outputs: BuildOutput[]) {
     ? `https://${process.env.VERCEL_URL}`
     : "{NO VERCEL URL}";
 
+  const protocol = process.env.USE_SSL === "true" ? "https" : "http";
+  const localUrl = `${protocol}://localhost:${CONFIG.SERVE_PORT}`;
+
   const jsLinks = outputs
     .filter(
       (output) =>
@@ -18,15 +21,13 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;script defer src="http://localhost:${
-          CONFIG.SERVE_PORT
-        }/${relativePath}"&gt;&lt;/script&gt;</code>
+        <code class="script-tag">&lt;script defer src="${localUrl}/${relativePath}"&gt;&lt;/script&gt;</code>
         ${
           process.env.VERCEL_URL
             ? `
         <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
         <div class="error-handler-box">
-          <code class="script-tag">&lt;script defer src="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const script=document.createElement('script');script.src='${vercelUrl}/${relativePath}';script.defer='true';document.head.appendChild(script);})()"&gt;&lt;/script&gt;</code>
+          <code class="script-tag">&lt;script defer src="${localUrl}/${relativePath}" onerror="(function(){const script=document.createElement('script');script.src='${vercelUrl}/${relativePath}';script.defer='true';document.head.appendChild(script);})()"&gt;&lt;/script&gt;</code>
         </div>
         `
             : ""
@@ -41,15 +42,13 @@ function generateIndexHtml(outputs: BuildOutput[]) {
       const relativePath = output.path.split("/dist/")[1];
       return `<li>
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
-        <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${
-          CONFIG.SERVE_PORT
-        }/${relativePath}"&gt;</code>
+        <code class="script-tag">&lt;link rel="stylesheet" href="${localUrl}/${relativePath}"&gt;</code>
         ${
           process.env.VERCEL_URL
             ? `
         <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
         <div class="error-handler-box">
-          <code class="script-tag">&lt;link rel="stylesheet" href="http://localhost:${CONFIG.SERVE_PORT}/${relativePath}" onerror="(function(){const link=document.createElement('link');link.rel='stylesheet';link.href='${vercelUrl}/${relativePath}';document.head.appendChild(link);})()"&gt;</code>
+          <code class="script-tag">&lt;link rel="stylesheet" href="${localUrl}/${relativePath}" onerror="(function(){const link=document.createElement('link');link.rel='stylesheet';link.href='${vercelUrl}/${relativePath}';document.head.appendChild(link);})()"&gt;</code>
         </div>
         `
             : ""

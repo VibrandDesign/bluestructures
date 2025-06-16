@@ -30,5 +30,8 @@ export const CONFIG = {
   },
   // Server Info for websocket
   SERVE_PORT: 6545,
-  SERVE_ORIGIN: `http://localhost:6545`,
+  SERVE_ORIGIN:
+    process.env.USE_SSL === "true"
+      ? `https://localhost:6545`
+      : `http://localhost:6545`,
 };

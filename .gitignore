@@ -168,3 +168,6 @@ dist
 .yarn/install-state.gz
 .pnp.\*
 .vercel
+
+# SSL certificates
+certs/

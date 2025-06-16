@@ -2,8 +2,11 @@ export const liveReloadCode = `
 (() => {
   const origins = ORIGIN_URL;
   const wsUrls = Array.isArray(origins) 
-    ? origins.map(origin => \`ws\${origin.startsWith('https') ? 's' : ''}://\${origin.replace(/^https?:\\/\\//, '')}/_reload\`)
-    : [\`ws://127.0.0.1:PORT_NUMBER/_reload\`];
+    ? origins.map(origin => {
+        const protocol = origin.startsWith('https') ? 'wss' : 'ws';
+        return \`\${protocol}://\${origin.replace(/^https?:\\/\\//, '')}/_reload\`;
+      })
+    : [\`WS_PROTOCOL://localhost:PORT_NUMBER/_reload\`];
 
   function connectWebSocket(url) {
     const ws = new WebSocket(url);

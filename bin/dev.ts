@@ -7,9 +7,19 @@ import type { BuildConfig } from "bun";
 import { existsSync } from "fs";
 import { resolve } from "path";
 import { getPageFiles } from "./pages";
+import { readFileSync } from "fs";
 
 let currentBuildResult: any = null;
 const clients = new Set<ServerWebSocket<unknown>>();
+
+// Add SSL configuration
+const useSSL = process.env.USE_SSL === "true";
+const ssl = useSSL
+  ? {
+      key: readFileSync(resolve("./certs/localhost-key.pem")),
+      cert: readFileSync(resolve("./certs/localhost.pem")),
+    }
+  : undefined;
 
 // Separate build function
 async function rebuildFiles() {
@@ -33,10 +43,8 @@ async function rebuildFiles() {
     for (const output of result.outputs) {
       if (output.path.endsWith(".js")) {
         const content = await Bun.file(output.path).text();
-        const vercelUrl = process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
-          : null;
         const liveReloadUrls = `"${CONFIG.SERVE_ORIGIN}"`;
+        const wsProtocol = useSSL ? "wss" : "ws";
 
         await Bun.write(
           output.path,
@@ -46,6 +54,7 @@ async function rebuildFiles() {
                 liveReloadCode
                   .replace("PORT_NUMBER", CONFIG.SERVE_PORT.toString())
                   .replace("ORIGIN_URL", liveReloadUrls)
+                  .replace("WS_PROTOCOL", wsProtocol)
               : "")
         );
       }
@@ -56,9 +65,9 @@ async function rebuildFiles() {
     console.log("✅ Build complete");
   } catch (error) {
     console.error("❌ Build failed:", error);
-    // Keep the previous build result if the new build fails
+
     if (!currentBuildResult) {
-      throw error; // Only throw if we don't have a previous build
+      throw error;
     }
   }
 }
@@ -66,6 +75,7 @@ async function rebuildFiles() {
 // Start the server once
 const server = Bun.serve({
   port: CONFIG.SERVE_PORT,
+  tls: ssl,
   fetch(req) {
     const url = new URL(req.url);
 
@@ -91,7 +101,11 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Server running at ${CONFIG.SERVE_ORIGIN}`);
+console.log(
+  `Server running at ${useSSL ? "https" : "http"}://localhost:${
+    CONFIG.SERVE_PORT
+  }`
+);
 
 // Watch for changes and only rebuild
 watch("src", { recursive: true }, async (event, filename) => {
