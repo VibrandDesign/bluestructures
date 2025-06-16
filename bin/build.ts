@@ -1,6 +1,8 @@
 import { CONFIG } from "./config";
 import type { BuildConfig } from "bun";
 import { generateBuildManifest, saveManifestFiles } from "./manifest";
+import { cp } from "node:fs/promises";
+import { existsSync } from "node:fs";
 
 async function build() {
   const startTime = Date.now();
@@ -22,6 +24,13 @@ async function build() {
       target: "browser",
       minify: true,
     } as BuildConfig);
+
+    // Copy public directory if it exists
+    if (existsSync("public")) {
+      console.log("\n📁 Copying public directory...");
+      await cp("public", "dist/public", { recursive: true });
+      console.log("✅ Public directory copied successfully!");
+    }
 
     const buildDuration = Date.now() - startTime;
     console.log("✅ Build complete!");

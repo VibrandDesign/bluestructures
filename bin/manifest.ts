@@ -1,5 +1,6 @@
 import { writeFileSync, readdirSync, statSync } from "fs";
 import { join } from "path";
+import { existsSync } from "fs";
 
 interface BuildOutput {
   path: string;
@@ -22,6 +23,9 @@ interface BuildManifest {
   };
   css: {
     files: BuildOutput[];
+  };
+  public: {
+    files: DistFile[];
   };
   distFiles: DistFile[];
   sourceMaps: DistFile[];
@@ -55,6 +59,14 @@ function getDistFiles(distPath: string): DistFile[] {
   return files;
 }
 
+function getPublicFiles(): DistFile[] {
+  const publicPath = join(process.cwd(), "public");
+  if (!existsSync(publicPath)) {
+    return [];
+  }
+  return getDistFiles(publicPath);
+}
+
 function separateSourceMaps(files: DistFile[]): {
   sourceMaps: DistFile[];
   otherFiles: DistFile[];
@@ -73,6 +85,7 @@ export function generateBuildManifest(
   const distPath = join(process.cwd(), "dist");
   const allFiles = getDistFiles(distPath);
   const { sourceMaps, otherFiles } = separateSourceMaps(allFiles);
+  const publicFiles = getPublicFiles();
 
   return {
     timestamp: new Date().toISOString(),
@@ -90,6 +103,9 @@ export function generateBuildManifest(
         size: output.size,
         type: output.type,
       })),
+    },
+    public: {
+      files: publicFiles,
     },
     distFiles: otherFiles,
     sourceMaps: sourceMaps,
@@ -231,6 +247,36 @@ export function saveManifestFiles(manifest: BuildManifest) {
               .join("")}
         </div>
     </div>
+
+    ${
+      manifest.public.files.length > 0
+        ? `
+    <div class="section">
+        <h2>Public Files</h2>
+        <div class="file-list">
+            ${manifest.public.files
+              .map(
+                (file) => `
+                <div class="file-item">
+                    <a href="/public/${
+                      file.path
+                    }" target="_blank" class="file-path">${file.path}</a>
+                    <span class="file-info">
+                        ${(file.size / 1024).toFixed(2)} KB • 
+                        ${file.type.toUpperCase()} • 
+                        Last modified: ${new Date(
+                          file.lastModified
+                        ).toLocaleString()}
+                    </span>
+                </div>
+            `
+              )
+              .join("")}
+        </div>
+    </div>
+    `
+        : ""
+    }
 
     ${
       manifest.sourceMaps.length > 0
