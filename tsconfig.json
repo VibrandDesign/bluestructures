@@ -23,7 +23,8 @@
       "@/*": ["src/*"],
       "@modules/*": ["src/modules/*"],
       "@utils/*": ["src/utils/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@webflow/*": ["src/webflow/*"]
     }
   }
 }

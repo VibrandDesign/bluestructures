@@ -1,5 +1,6 @@
 import Lenis from "lenis";
 import gsap from "./gsap";
+import { handleEditor } from "@webflow/detect-editor";
 
 type SubscriberFn = (data: any) => void;
 
@@ -56,3 +57,11 @@ class _Scroll extends Lenis {
 }
 
 export const Scroll = new _Scroll();
+
+handleEditor((isEditor) => {
+  if (isEditor) {
+    Scroll.destroy();
+  } else {
+    Scroll.start();
+  }
+});
