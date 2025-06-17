@@ -1,7 +1,6 @@
 import { type TransitionParams } from "@lib/pages";
 import { createModules } from "@/modules/_/create";
 import gsap from "@lib/gsap";
-import { Scroll } from "@lib/scroll";
 
 /*
 Example Component Lifecycle
@@ -47,15 +46,13 @@ export class _Dom {
         opacity: 0,
       }),
     ]);
-
-    Scroll.toTop();
   }
 
   async pageIn({ to, trigger, wrapper }: TransitionParams) {
     await Promise.allSettled([
       // new Promise((resolve) => setTimeout(resolve, 100)),
       await gsap.to(wrapper, {
-        duration: 0.3,
+        duration: 0.8,
         opacity: 1,
       }),
     ]);

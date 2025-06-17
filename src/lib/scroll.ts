@@ -10,6 +10,7 @@ const SCROLL_CONFIG = {
   lerp: 0.1,
   smoothWheel: true,
   touchMultiplier: 2,
+  // autoResize: true,
 };
 
 class _Scroll extends Lenis {

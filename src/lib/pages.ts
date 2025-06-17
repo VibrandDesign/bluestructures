@@ -2,6 +2,7 @@ import { App } from "@/app";
 import { Dom } from "@lib/dom";
 import { Core } from "@unseenco/taxi";
 import { Transition } from "@lib/page-transitions";
+import { Scroll } from "@lib/scroll";
 
 const PAGES_CONFIG = {
   links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -33,9 +34,13 @@ export class _Pages extends Core {
       // Gl.pageOut(),
       // ...
     ]);
+
+    Scroll.toTop();
   }
 
   async transitionIn({ to, trigger }: TransitionParams) {
+    Scroll.resize();
+
     await Promise.allSettled([
       Dom.pageIn({ to, trigger, wrapper: this.wrapper }),
       // Gl.pageIn()
