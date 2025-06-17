@@ -33,7 +33,7 @@ export class _Dom {
     await Promise.allSettled([
       // new Promise((resolve) => setTimeout(resolve, 100)),
       await gsap.to(wrapper, {
-        duration: 0.8,
+        duration: 0.2,
         opacity: 1,
       }),
       // ...
