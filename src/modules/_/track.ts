@@ -18,7 +18,7 @@ const DEFAULT_CONFIG: {
 
 export class Track extends Observe {
   value = 0;
-  #init = false;
+  init = false;
 
   bounds: any;
   config: {
@@ -51,10 +51,10 @@ export class Track extends Observe {
     };
 
     this.#resize();
-    this.#scrollSub = Scroll.add(this.#handleScroll);
-    this.#resizeSub = Resize.add(this.#resize);
+    this.#scrollSub = Scroll.add(this.#handleScroll.bind(this));
+    this.#resizeSub = Resize.add(this.#resize.bind(this));
+    this.init = true;
     this.#handleScroll();
-    this.#init = true;
   }
 
   #resize = () => {
@@ -63,13 +63,13 @@ export class Track extends Observe {
     this.#handleScroll();
   };
 
-  #handleScroll = () => {
-    if (!this.inView && !this.#init) return;
+  #handleScroll() {
+    if (!this.inView || !this.init) return;
     this.value = clamp(
       0,
       1,
       map(
-        Scroll.y,
+        Scroll.scroll,
         this.bounds.top,
         this.bounds.bottom,
         this.config.bounds[0],
@@ -77,10 +77,11 @@ export class Track extends Observe {
       )
     );
 
-    // console.log(this.value)
+    // console.log(this.value);
     this.handleScroll?.(this.value);
+    this.track?.(this.value);
     this.config.callback?.(this.value);
-  };
+  }
 
   destroy() {
     this.config.callback = null;

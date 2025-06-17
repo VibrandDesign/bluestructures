@@ -3,13 +3,16 @@ import { createModules } from "@/modules/_/create";
 import gsap from "@lib/gsap";
 
 export class _Dom {
-  modules: any[] = createModules() || [];
+  modules: any[] = [];
 
-  constructor() {}
+  constructor() {
+    this.#create();
+  }
 
   #create() {
     this.modules = [];
     this.modules = createModules();
+    this.start();
   }
 
   /** -- Lifecycles */
@@ -25,6 +28,8 @@ export class _Dom {
       }),
       // ...
     ]);
+
+    this.destroy();
   }
 
   async pageIn({ to, trigger, wrapper }: TransitionParams) {
@@ -38,6 +43,18 @@ export class _Dom {
       }),
       // ...
     ]);
+  }
+
+  start() {
+    this.modules.forEach((module) => {
+      if (module.start) module.start();
+    });
+  }
+
+  destroy() {
+    this.modules.forEach((module) => {
+      if (module.destroy) module.destroy();
+    });
   }
 }
 

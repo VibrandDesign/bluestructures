@@ -1,4 +1,4 @@
-// import { hey } from "../../hey"
+import { Module } from "./module";
 
 interface ObserveConfig {
   root?: HTMLElement | null;
@@ -152,13 +152,12 @@ export class ObserverManager {
   }
 }
 
-export class Observe {
+export class Observe extends Module {
   element: HTMLElement;
   #config: ObserveConfig;
   #group: ObserverGroup;
   protected isIn(data: ObserveEventData): void {}
   protected isOut(data: ObserveEventData): void {}
-
   inView: boolean;
   callback: ({
     entry,
@@ -179,11 +178,12 @@ export class Observe {
       root: null,
       rootMargin: "0px",
       threshold: 0.1,
-      autoStart: true,
+      autoStart: false,
       once: false,
       callback: undefined,
     }
   ) {
+    super(element);
     this.element = element;
     this.#config = config;
     this.inView = false;

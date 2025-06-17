@@ -18,8 +18,15 @@ export class Module {
   pageOut >
   */
 
-  async pageIn() {}
-  async pageOut() {}
+  async pageIn() {
+    // ...
+    this.start();
+  }
+
+  async pageOut() {
+    // ...
+    this.destroy();
+  }
 
   /* -- functional
   start > modules observes, get ready, whatever
