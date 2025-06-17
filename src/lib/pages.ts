@@ -14,8 +14,9 @@ const PAGES_CONFIG = {
 export interface TransitionParams {
   from?: Element | HTMLElement;
   to?: Element | HTMLElement;
-  trigger: string | false | HTMLElement;
+  trigger: HTMLAnchorElement;
   wrapper: HTMLElement | any;
+  destination?: string;
 }
 
 export class _Pages extends Core {
@@ -30,7 +31,12 @@ export class _Pages extends Core {
 
   async transitionOut({ from, trigger }: TransitionParams) {
     await Promise.allSettled([
-      Dom.pageOut({ from, trigger, wrapper: this.wrapper }),
+      Dom.pageOut({
+        from,
+        trigger,
+        wrapper: this.wrapper,
+        destination: new URL(trigger.href).pathname,
+      }),
       // Gl.pageOut(),
       // ...
     ]);
