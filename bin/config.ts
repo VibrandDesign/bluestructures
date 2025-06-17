@@ -1,4 +1,5 @@
 import { globEagerPlugin } from "./plugins/glob";
+import { glslPlugin } from "./plugins/glsl";
 import { getPageFiles } from "./pages";
 import { existsSync } from "fs";
 import { resolve } from "path";
@@ -23,7 +24,7 @@ export const CONFIG = {
     target: "browser",
     format: "iife",
     minify: process.env.NODE_ENV === "production",
-    plugins: [globEagerPlugin()],
+    plugins: [globEagerPlugin(), glslPlugin()],
   },
   css: {
     entrypoints: cssEntrypoints,

@@ -1,0 +1,65 @@
+import { type TransitionParams } from "@lib/pages";
+import { createModules } from "@/modules/_/create";
+import gsap from "@lib/gsap";
+import { Scroll } from "@lib/scroll";
+
+/*
+Example Component Lifecycle
+
+start() // starts the component, including obseerrver and such
+animateIn() // animates the component in /triggered by the observer or manually
+stop() // stops the component, including observer and such
+animateOut() // animates the component out /triggered by the observer or manually
+destroy() // destroys the component, including observer and such
+
+page transition
+
+pageOut() {
+    stop()
+    animateOut() (if in view)
+    destroy()
+}
+
+pageIn() {
+    start()
+    animateIn()
+}
+*/
+
+export class _Dom {
+  private modules = createModules();
+
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    console.log("dom", this.modules);
+  }
+
+  /** Lifecycles */
+
+  async pageOut({ from, trigger, wrapper }: TransitionParams) {
+    await Promise.allSettled([
+      // new Promise((resolve) => setTimeout(resolve, 100)),
+      await gsap.to(wrapper, {
+        duration: 0.3,
+        opacity: 0,
+      }),
+    ]);
+
+    Scroll.toTop();
+  }
+
+  async pageIn({ to, trigger, wrapper }: TransitionParams) {
+    await Promise.allSettled([
+      // new Promise((resolve) => setTimeout(resolve, 100)),
+      await gsap.to(wrapper, {
+        duration: 0.3,
+        opacity: 1,
+      }),
+    ]);
+  }
+}
+
+export const Dom = new _Dom();
