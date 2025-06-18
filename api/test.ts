@@ -1,4 +1,4 @@
-import { corsResponse } from "@utils/api-cors";
+import { corsResponse } from "./utils/api-cors";
 
 export async function OPTIONS(request: Request) {
   return corsResponse(request);
