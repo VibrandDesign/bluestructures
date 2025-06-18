@@ -1,23 +1,14 @@
-import { config } from "../config/build-config";
-
 const basePath = "/api/";
 
-// Use the build configuration
-const isDev = config.NODE_ENV === "development";
-const vercelUrl = config.VERCEL_URL;
+const vercelUrl = "webflow-dev-setup-xi.vercel.app";
+const useSSL = true;
+
+const isDev = process.env.NODE_ENV === "development";
 
 export const apiPath = (route: string = "") => {
   // In development
   if (isDev) {
-    // Use the same protocol as the current page
-    const protocol =
-      typeof window !== "undefined" ? window.location.protocol : "http:";
-    return `${protocol}//localhost:6546${basePath}${route}`;
-  }
-
-  // In production, use Vercel URL
-  if (!vercelUrl) {
-    throw new Error("VERCEL_URL is not set, API will not work in production");
+    return `${useSSL ? "https" : "http"}://localhost:6546${basePath}${route}`;
   }
 
   return `https://${vercelUrl}${basePath}${route}`;
