@@ -1,11 +1,39 @@
 import { serve } from "bun";
 import { readdir } from "fs/promises";
-import { join } from "path";
+import { join, resolve } from "path";
+import { existsSync, readFileSync } from "fs";
 
 const API_DIR = join(import.meta.dir, "..", "api");
 
 // Cache for loaded route handlers
 const routeHandlers = new Map<string, any>();
+
+// Add SSL configuration
+const useSSL = process.env.USE_SSL === "true";
+const ssl = useSSL
+  ? (() => {
+      const keyPath = resolve("./certs/localhost-key.pem");
+      const certPath = resolve("./certs/localhost.pem");
+
+      if (!existsSync(keyPath) || !existsSync(certPath)) {
+        console.error("\n❌ SSL certificates not found!");
+        console.error("To use SSL, you need to generate certificates first.");
+        console.error("You can generate them using mkcert:");
+        console.error(
+          "1. Install mkcert: https://github.com/FiloSottile/mkcert"
+        );
+        console.error("2. Run: mkcert -install");
+        console.error("3. Run: mkcert localhost");
+        console.error("4. Move the generated files to ./certs/ directory\n");
+        process.exit(1);
+      }
+
+      return {
+        key: readFileSync(keyPath),
+        cert: readFileSync(certPath),
+      };
+    })()
+  : undefined;
 
 function generateHtml(routes: string[]) {
   return `
@@ -65,6 +93,7 @@ async function loadRoutes() {
 
 const server = serve({
   port: 6546,
+  tls: ssl,
   async fetch(request) {
     const url = new URL(request.url);
 
@@ -98,4 +127,8 @@ const server = serve({
 });
 
 await loadRoutes();
-console.log(`🚀 API Server running on http://localhost:${server.port}`);
+console.log(
+  `🚀 API Server running on ${useSSL ? "https" : "http"}://localhost:${
+    server.port
+  }`
+);

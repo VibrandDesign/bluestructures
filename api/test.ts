@@ -1,5 +1,11 @@
+import { corsResponse } from "@utils/api-cors";
+
+export async function OPTIONS(request: Request) {
+  return corsResponse(request);
+}
+
 export function GET(request: Request) {
-  //   return new Response(`Hello from ${process.env.VERCEL_REGION}`);
-  console.log("Hello from me");
-  return new Response(`Hello from me`);
+  return corsResponse(request, {
+    message: "Hello from me",
+  });
 }

@@ -1,6 +1,7 @@
 import { Scroll } from "@lib/scroll";
 import { Dom } from "@lib/dom";
 import { Pages } from "@lib/pages";
+import { apiPath } from "@utils/api-path";
 
 // import handleEditor from "@webflow/detect-editor";
 
@@ -13,6 +14,14 @@ class _App {
 
   constructor() {
     console.log("app.js/ts::", performance.now());
+
+    console.log("apiPath", apiPath("test"));
+
+    fetch(apiPath("test"))
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("data", data);
+      });
   }
 }
 
