@@ -1,2 +1,5 @@
 preload = ["bin/plugins/glob.ts"]
 
+[build.define]
+"config.NODE_ENV" = "development"
+"config.VERCEL_URL" = "process.env.VERCEL_URL"

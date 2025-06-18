@@ -7,6 +7,8 @@ import { apiPath } from "@utils/api-path";
 
 // history.scrollRestoration = "manual";
 
+// console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
 class _App {
   private scroll = Scroll;
   dom = Dom;
