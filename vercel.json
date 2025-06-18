@@ -1,5 +1,10 @@
 {
   "buildCommand": "bun bundle",
   "devCommand": "bun api",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "bun@1.1.45"
+    }
+  }
 }
