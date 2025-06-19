@@ -1,0 +1,54 @@
+# Development Workflow Rules
+
+## Creating New Modules
+
+1. Create file in `src/modules/` with descriptive name
+2. Use default export function with correct signature
+3. Import necessary lifecycle hooks
+4. Add `data-module` attribute to HTML element
+5. Test module functionality
+
+## Module Development Pattern
+
+```typescript
+// 1. Start with basic structure
+export default function (element: HTMLElement, dataset: DOMStringMap) {
+  console.log("Module loaded:", element);
+
+  // 2. Add lifecycle hooks
+  onMount(() => {
+    console.log("Module mounted");
+  });
+
+  onDestroy(() => {
+    console.log("Module destroyed");
+  });
+
+  // 3. Add functionality incrementally
+  // 4. Test each addition
+  // 5. Add error handling
+}
+```
+
+## Debugging
+
+- Use console.log for module loading confirmation
+- Check browser console for errors
+- Verify `data-module` attribute matches filename
+- Ensure proper import paths
+- Test lifecycle hooks individually
+
+## Testing
+
+- Test module mounting/destruction
+- Test page transitions
+- Test viewport detection
+- Test scroll tracking
+- Test with different dataset values
+
+## Common Issues
+
+- Module not loading: Check attribute name matches filename
+- Lifecycle not firing: Check import paths
+- GSAP errors: Ensure proper cleanup in onDestroy
+- Memory leaks: Always clean up observers and listeners

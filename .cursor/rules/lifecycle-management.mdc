@@ -1,0 +1,76 @@
+# Lifecycle Management Rules
+
+## Mounting Phase
+
+```typescript
+onMount(() => {
+  // Initialize component state
+  // Set up initial styles
+  // Add event listeners
+  // Create observers
+});
+```
+
+## Destruction Phase
+
+```typescript
+onDestroy(() => {
+  // Remove event listeners
+  // Clear intervals/timeouts
+  // Destroy observers
+  // Reset element styles
+  // Clean up GSAP animations
+});
+```
+
+## Page Transitions
+
+```typescript
+onPage(async () => {
+  // Animate out current state
+  await gsap.to(element, { duration: 0.5, opacity: 0 });
+
+  // Animate in new state
+  await gsap.to(element, { duration: 0.5, opacity: 1 });
+});
+```
+
+## Viewport Detection
+
+```typescript
+const observer = onView(element, {
+  threshold: 0.1,
+  rootMargin: "0px",
+  autoStart: true,
+  once: false,
+  callback: ({ isIn, direction }) => {
+    if (isIn) {
+      // Element entered viewport
+    } else {
+      // Element left viewport
+    }
+  },
+});
+```
+
+## Scroll Tracking
+
+```typescript
+const track = onTrack(element, {
+  bounds: [0, 1],
+  top: "center",
+  bottom: "center",
+  callback: (value) => {
+    // Handle scroll progress (0-1)
+    element.style.transform = `translateY(${value * 100}px)`;
+  },
+});
+```
+
+## Best Practices
+
+- Always clean up in `onDestroy`
+- Use async/await for page transitions
+- Return cleanup functions when needed
+- Handle edge cases and errors
+- Use proper TypeScript types

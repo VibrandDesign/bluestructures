@@ -1,0 +1,73 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Custom Module System Rules
+
+## Overview
+
+This project uses a custom module system where JavaScript modules are automatically discovered and mounted based on DOM attributes. Each module is a function that receives an element and its dataset, with lifecycle hooks for mounting, destroying, and page transitions.
+
+## Module Structure
+
+- **Location**: All modules go in `src/modules/` directory
+- **Export**: Must be a default export function
+- **Signature**: `(element: HTMLElement, dataset: DOMStringMap) => void`
+- **Naming**: Module filename must match the `data-module` attribute value
+
+## Lifecycle Hooks
+
+Import these from `@/modules/_`:
+
+- `onMount(fn: () => void)` - Runs when module is mounted
+- `onDestroy(fn: () => void)` - Runs when module is destroyed
+- `onPage(fn: () => Promise<void>)` - Runs during page transitions
+- `onView(element, config)` - Intersection observer for viewport detection
+- `onTrack(element, config)` - Scroll tracking with bounds
+
+## DOM Integration
+
+- Use `data-module="moduleName"` attributes on HTML elements
+- The system automatically finds and instantiates modules
+- Module name in attribute must match filename (without extension)
+
+## Best Practices
+
+- Always use lifecycle hooks for cleanup
+- Return cleanup functions when needed
+- Use `onDestroy` for removing event listeners and observers
+- Use `onPage` for page transition animations
+- Use `onView` for scroll-triggered animations
+- Use `onTrack` for scroll-based progress tracking
+
+## Example Pattern
+
+```typescript
+import { onMount, onDestroy, onPage, onView, onTrack } from "@/modules/_";
+
+export default function (element: HTMLElement, dataset: DOMStringMap) {
+  // Setup
+  onMount(() => {
+    // Initialize component
+  });
+
+  // Page transitions
+  onPage(async () => {
+    // Animate in/out during page changes
+  });
+
+  // Viewport detection
+  const observer = onView(element, {
+    threshold: 0.1,
+    callback: ({ isIn }) => {
+      // Handle visibility changes
+    },
+  });
+
+  // Cleanup
+  onDestroy(() => {
+    // Clean up resources
+  });
+}
+```

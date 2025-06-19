@@ -1,0 +1,39 @@
+# DOM Attribute Conventions
+
+## Module Attributes
+
+- **Primary**: `data-module="moduleName"` - Links element to module
+- **Secondary**: `data-*` attributes for module configuration
+- **Naming**: Use kebab-case for attribute names
+
+## Common Patterns
+
+```html
+<!-- Basic module -->
+<div data-module="cycle"></div>
+
+<!-- With configuration -->
+<div data-module="nav" data-speed="0.5" data-delay="100"></div>
+
+<!-- Multiple modules on same element -->
+<div data-module="cycle" data-animation="fade"></div>
+```
+
+## Dataset Access
+
+Access custom attributes in modules:
+
+```typescript
+export default function (element: HTMLElement, dataset: DOMStringMap) {
+  const speed = dataset.speed || "1";
+  const delay = dataset.delay || "0";
+  const animation = dataset.animation || "default";
+}
+```
+
+## Validation
+
+- Always check for required attributes
+- Provide sensible defaults
+- Use type conversion for numeric values
+- Validate attribute values when needed
