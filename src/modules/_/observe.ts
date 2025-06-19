@@ -1,6 +1,6 @@
 import { Module } from "./module";
 
-interface ObserveConfig {
+export interface ObserveConfig {
   root?: HTMLElement | null;
   rootMargin?: string;
   threshold?: number;
@@ -12,6 +12,7 @@ interface ObserveConfig {
 interface ObserveEventData {
   entry: IntersectionObserverEntry;
   direction: number;
+  isIn: boolean;
 }
 
 interface ObserverGroup {

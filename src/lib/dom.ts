@@ -1,9 +1,11 @@
 import { type TransitionParams } from "@lib/pages";
 import { createModules } from "@/modules/_/create";
+import { createCycles, runDestroy, runMount, runPage } from "@/lifecycle/_";
 import gsap from "@lib/gsap";
 
 export class _Dom {
   modules: any[] = [];
+  cycles: any[] = [];
 
   constructor() {
     this.#create();
@@ -12,6 +14,10 @@ export class _Dom {
   #create() {
     this.modules = [];
     this.modules = createModules();
+
+    this.cycles = createCycles();
+    runMount();
+
     this.start();
   }
 
@@ -21,15 +27,17 @@ export class _Dom {
     // console.log(destination);
 
     await Promise.allSettled([
+      await runPage(),
       // new Promise((resolve) => setTimeout(resolve, 100)),
-      await gsap.to(wrapper, {
-        duration: 0.3,
-        opacity: 0,
-      }),
+      // await gsap.to(wrapper, {
+      //   duration: 0.3,
+      //   opacity: 0,
+      // }),
       // ...
     ]);
 
     this.destroy();
+    runDestroy();
   }
 
   async pageIn({ to, trigger, wrapper }: TransitionParams) {
@@ -37,10 +45,10 @@ export class _Dom {
 
     await Promise.allSettled([
       // new Promise((resolve) => setTimeout(resolve, 100)),
-      await gsap.to(wrapper, {
-        duration: 0.2,
-        opacity: 1,
-      }),
+      // await gsap.to(wrapper, {
+      //   duration: 0.2,
+      //   opacity: 1,
+      // }),
       // ...
     ]);
   }

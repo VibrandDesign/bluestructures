@@ -22,6 +22,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@modules/*": ["src/modules/*"],
+      "@lifecycle/*": ["src/lifecycle/*"],
       "@utils/*": ["src/utils/*"],
       "@lib/*": ["src/lib/*"],
       "@webflow/*": ["src/webflow/*"]
