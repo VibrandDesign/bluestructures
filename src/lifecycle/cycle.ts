@@ -5,7 +5,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   console.log("cycle", element);
 
   onMount(() => {
-    console.log("onMount");
+    // console.log("onMount");
     element.style.backgroundColor = "red";
   });
 
