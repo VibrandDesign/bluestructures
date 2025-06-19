@@ -1,7 +1,7 @@
 const modules = import.meta.glob("../*.{ts,js}", { eager: true });
 // console.log("modules -> []", modules);
 
-export function createModules(dataAttribute = "module") {
+export function createCycles(dataAttribute = "module") {
   return Array.from(document.querySelectorAll(`[data-${dataAttribute}]`))
     .map((element) => {
       const attributeValue = (element as HTMLElement).dataset[dataAttribute];
@@ -11,15 +11,28 @@ export function createModules(dataAttribute = "module") {
         : `./../${attributeValue}.js`;
 
       if (modules[modulePath]) {
-        const ModuleClass = Object.values(modules[modulePath])[0] as {
-          new (element: HTMLElement): any;
-        };
-        try {
-          return new ModuleClass(element as HTMLElement);
-        } catch (error) {
+        // Expecting a default export function
+        const moduleFn = (
+          modules[modulePath] as {
+            default: (el: HTMLElement, dataset: DOMStringMap) => any;
+          }
+        ).default;
+        if (typeof moduleFn === "function") {
+          try {
+            return moduleFn(
+              element as HTMLElement,
+              (element as HTMLElement).dataset
+            );
+          } catch (error) {
+            console.warn(
+              `Failed to call default function for ${dataAttribute} "${attributeValue}":`,
+              error
+            );
+            return null;
+          }
+        } else {
           console.warn(
-            `Failed to instantiate ${dataAttribute} "${attributeValue}":`,
-            error
+            `Default export is not a function for ${dataAttribute} "${attributeValue}"`
           );
           return null;
         }

@@ -1,5 +1,3 @@
-import { Module } from "./module";
-
 export interface ObserveConfig {
   root?: HTMLElement | null;
   rootMargin?: string;
@@ -153,7 +151,7 @@ export class ObserverManager {
   }
 }
 
-export class Observe extends Module {
+export class Observe {
   element: HTMLElement;
   #config: ObserveConfig;
   #group: ObserverGroup;
@@ -184,7 +182,7 @@ export class Observe extends Module {
       callback: undefined,
     }
   ) {
-    super(element);
+    // super(element);
     this.element = element;
     this.#config = config;
     this.inView = false;

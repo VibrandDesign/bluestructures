@@ -1,13 +1,10 @@
 import { Observe, ObserveConfig, Track } from "@/modules/_";
-import { Scroll } from "@lib/scroll";
 
 /** -- <stores> */
-
 const destroy: Array<() => void> = [];
 const mount: Array<() => void> = [];
 
 /** -- <lifecycle> */
-
 export function onMount(fn: () => void) {
   mount.push(fn);
 }
@@ -29,7 +26,6 @@ export function runMount() {
 }
 
 /** -- <animation> */
-
 const page: Array<() => Promise<void>> = [];
 
 export function onPage(fn: () => Promise<void>) {
