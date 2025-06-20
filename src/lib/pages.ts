@@ -40,6 +40,8 @@ export class _Pages extends Core {
     runMount();
   }
 
+  // async init() {}
+
   async transitionOut({ from, trigger }: TransitionParams) {
     await Promise.allSettled([
       await runPageOut(),
