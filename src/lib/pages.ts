@@ -3,7 +3,13 @@ import { App } from "@/app";
 import { Core } from "@unseenco/taxi";
 import { Transition } from "@lib/page-transitions";
 import { Scroll } from "@lib/scroll";
-import { createCycles, runDestroy, runMount, runPage } from "@/modules/_";
+import {
+  createCycles,
+  runDestroy,
+  runMount,
+  runPage,
+  runPageIn,
+} from "@/modules/_";
 
 const PAGES_CONFIG = {
   links: "a:not([target]):not([href^=\\#]):not([data-taxi-ignore])",
@@ -30,6 +36,7 @@ export class _Pages extends Core {
     });
 
     createCycles();
+    runPageIn();
     runMount();
   }
 
@@ -50,6 +57,7 @@ export class _Pages extends Core {
     // State.PAGE = to;
 
     await Promise.allSettled([
+      await runPageIn(),
       // ...
     ]);
 

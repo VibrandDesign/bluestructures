@@ -1,9 +1,23 @@
-import { onMount, onDestroy, onPage, onView, onTrack } from "@/modules/_";
+import {
+  onMount,
+  onDestroy,
+  onPage,
+  onView,
+  onTrack,
+  onPageIn,
+} from "@/modules/_";
 import gsap from "@lib/gsap";
 // import { Raf, Resize } from "@/lib/subs";
 
 export default function (element: HTMLElement, dataset: DOMStringMap) {
   console.log("cycle", element);
+
+  onPageIn(async () => {
+    // await gsap.to(element, {
+    //   duration: 1,
+    //   backgroundColor: "green",
+    // });
+  });
 
   onMount(() => {
     element.style.backgroundColor = "red";

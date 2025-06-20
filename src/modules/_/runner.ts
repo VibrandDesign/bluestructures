@@ -1,3 +1,17 @@
+/*
+
+mount()
+destroy()
+
+pageIn()
+pageOut()
+
+view()
+track()
+
+
+*/
+
 import { Observe, ObserveConfig, Track } from "@/modules/_";
 
 /** -- <stores> */
@@ -27,6 +41,7 @@ export function runMount() {
 
 /** -- <animation> */
 const page: Array<() => Promise<void>> = [];
+const pageIn: Array<() => Promise<void>> = [];
 
 export function onPage(fn: () => Promise<void>) {
   page.push(fn);
@@ -36,6 +51,15 @@ export async function runPage() {
   await Promise.allSettled(page.map((fn) => fn()));
   page.length = 0;
   //   console.log("page -> []", page);
+}
+
+export function onPageIn(fn: () => Promise<void>) {
+  pageIn.push(fn);
+}
+
+export async function runPageIn() {
+  await Promise.allSettled(pageIn.map((fn) => fn()));
+  pageIn.length = 0;
 }
 
 export function onView(
