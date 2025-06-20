@@ -1,7 +1,7 @@
 import {
   onMount,
   onDestroy,
-  onPage,
+  onPageOut,
   onView,
   onTrack,
   onPageIn,
@@ -11,22 +11,17 @@ import gsap from "@lib/gsap";
 
 export default function (element: HTMLElement, dataset: DOMStringMap) {
   console.log("cycle", element);
+  // App.state.on("something", () => {});
 
   onPageIn(async () => {
+    console.log("onPageIn");
     // await gsap.to(element, {
     //   duration: 1,
     //   backgroundColor: "green",
     // });
   });
 
-  onMount(() => {
-    element.style.backgroundColor = "red";
-    console.log("onMount");
-  });
-
-  // App.state.on("something", () => {});
-
-  onPage(async () => {
+  onPageOut(async () => {
     await gsap.to(element, {
       duration: 1,
       backgroundColor: "blue",
@@ -36,6 +31,11 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
       duration: 1,
       autoAlpha: 0,
     });
+  });
+
+  onMount(() => {
+    element.style.backgroundColor = "red";
+    console.log("onMount");
   });
 
   const observer = onView(element, {
@@ -49,14 +49,14 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
     },
   });
 
-  // const track = onTrack(element, {
-  //   bounds: [0, 1],
-  //   top: "center",
-  //   bottom: "center",
-  //   callback: (value) => {
-  //     console.log("track", value);
-  //   },
-  // });
+  const track = onTrack(element, {
+    bounds: [0, 1],
+    top: "center",
+    bottom: "center",
+    callback: (value) => {
+      console.log("track", value);
+    },
+  });
 
   onDestroy(() => {
     console.log("onDestroy");

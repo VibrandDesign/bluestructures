@@ -7,7 +7,7 @@ import {
   createCycles,
   runDestroy,
   runMount,
-  runPage,
+  runPageOut,
   runPageIn,
 } from "@/modules/_";
 
@@ -42,7 +42,7 @@ export class _Pages extends Core {
 
   async transitionOut({ from, trigger }: TransitionParams) {
     await Promise.allSettled([
-      await runPage(),
+      await runPageOut(),
       // ...
     ]);
 

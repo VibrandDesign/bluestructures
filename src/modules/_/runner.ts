@@ -40,16 +40,16 @@ export function runMount() {
 }
 
 /** -- <animation> */
-const page: Array<() => Promise<void>> = [];
+const pageOut: Array<() => Promise<void>> = [];
 const pageIn: Array<() => Promise<void>> = [];
 
-export function onPage(fn: () => Promise<void>) {
-  page.push(fn);
+export function onPageOut(fn: () => Promise<void>) {
+  pageOut.push(fn);
 }
 
-export async function runPage() {
-  await Promise.allSettled(page.map((fn) => fn()));
-  page.length = 0;
+export async function runPageOut() {
+  await Promise.allSettled(pageOut.map((fn) => fn()));
+  pageOut.length = 0;
   //   console.log("page -> []", page);
 }
 
