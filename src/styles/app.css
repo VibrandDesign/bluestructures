@@ -1,5 +1,6 @@
 @import "./media.css";
 @import "./editor.css";
+@import "./mod/fluid-type.css";
 
 body {
   /* background-color: red; */

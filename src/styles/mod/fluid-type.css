@@ -1,27 +1,31 @@
 html {
-  --fluid-width: 1920;
+  --fluid-width: 1440;
 
   --value: 12;
-  --design-width: 1728;
-  --design-height: 1117;
-  --vw-ratio: 0.8;
-  --vh-ratio: 0.8;
+  --design-width: 1440;
+  --design-height: 1080;
+  --vw-ratio: 1;
+  --vh-ratio: 0;
 
-  font-size: calc(
-    (
-        (100vw / var(--design-width) * (var(--value) * var(--vw-ratio))) +
-          (1 - var(--vw-ratio)) * (var(--value) * 1px)
-      ) +
+  --min-font-size: 10px;
+  --max-font-size: 16px;
+
+  font-size: clamp(
+    var(--min-font-size),
+    calc(
       (
-        (100vh / var(--design-height) * (var(--value) * var(--vh-ratio))) +
-          (1 - var(--vh-ratio)) * (var(--value) * 1px)
-      ) / 2
+          (100vw / var(--design-width) * (var(--value) * var(--vw-ratio))) +
+            (1 - var(--vw-ratio)) * (var(--value) * 1px)
+        ) +
+        (
+          (100vh / var(--design-height) * (var(--value) * var(--vh-ratio))) +
+            (1 - var(--vh-ratio)) * (var(--value) * 1px)
+        ) / 2
+    ),
+    var(--max-font-size)
   );
 
   line-height: 0.8em;
-
-  /*   --fluid: calc( [fluid-calculation-of-the-death] / 16 ); 
- */
 }
 
 @media (max-width: 768px) {
@@ -31,5 +35,8 @@ html {
     --design-height: 844;
     --vw-ratio: 0.9;
     --vh-ratio: 0.9;
+
+    /* --min-font-size: 10px;
+    --max-font-size: 24px; */
   }
 }
