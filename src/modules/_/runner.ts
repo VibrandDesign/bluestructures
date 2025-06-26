@@ -52,7 +52,6 @@ export function onPageOut(
     pageOut.push(async () => {
       const rect = element.getBoundingClientRect();
       const isCurrentlyVisible = rect.top < Resize.height && rect.bottom > 0;
-
       return isCurrentlyVisible ? await fn() : Promise.resolve();
     });
   } else {
