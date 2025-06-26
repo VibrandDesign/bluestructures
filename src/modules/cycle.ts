@@ -16,7 +16,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   onPageIn(async () => {
     console.log("onPageIn");
     await gsap.to(element, {
-      duration: 2,
+      duration: 0.2,
       backgroundColor: "green",
     });
   });
@@ -52,7 +52,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
     autoStart: false,
     once: false,
     callback: ({ isIn }) => {
-      console.log("inView", isIn);
+      // console.log("inView", isIn);
     },
   });
 

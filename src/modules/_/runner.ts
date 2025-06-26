@@ -13,6 +13,7 @@ track()
 */
 
 import { Observe, ObserveConfig, Track } from "@/modules/_";
+import { Resize } from "@/lib/subs";
 
 /** -- <stores> */
 const destroy: Array<() => void> = [];
@@ -48,25 +49,11 @@ export function onPageOut(
   { element }: { element?: HTMLElement } = {}
 ) {
   if (element) {
-    let observer: Observe;
-
-    queueMicrotask(() => {
-      observer = onView(element, {
-        threshold: 0,
-        autoStart: true,
-      });
-    });
-
     pageOut.push(async () => {
-      let { inView } = observer;
-      console.log("observed", inView);
+      const rect = element.getBoundingClientRect();
+      const isCurrentlyVisible = rect.top < Resize.height && rect.bottom > 0;
 
-      // observer.destroy();
-      if (inView) {
-        return await fn();
-      } else {
-        return Promise.resolve();
-      }
+      return isCurrentlyVisible ? await fn() : Promise.resolve();
     });
   } else {
     pageOut.push(fn);
