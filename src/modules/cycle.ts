@@ -7,11 +7,12 @@ import {
   onPageIn,
 } from "@/modules/_";
 import gsap from "@lib/gsap";
-import { Raf, Resize } from "@/lib/subs";
+// import { Raf, Resize } from "@/lib/subs";/
+import State from "@lib/hey";
 
 export default function (element: HTMLElement, dataset: DOMStringMap) {
   console.log("cycle", element);
-  // App.state.on("something", () => {});
+  // State.on("something", () => {});
 
   onPageIn(async () => {
     console.log("onPageIn");
@@ -33,10 +34,10 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
         duration: 1,
         autoAlpha: 0,
       });
-    },
-    {
-      element,
     }
+    // {
+    //   element,
+    // }
   );
 
   onMount(() => {
