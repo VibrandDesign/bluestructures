@@ -1,3 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Lifecycle Management Rules
+
+## Mounting Phase
+
+```typescript
 # Lifecycle Management Rules
 
 ## Mounting Phase
@@ -8,6 +18,7 @@ onMount(() => {
   // Set up initial styles
   // Add event listeners
   // Create observers
+  // Start subscription services
 });
 ```
 
@@ -20,19 +31,37 @@ onDestroy(() => {
   // Destroy observers
   // Reset element styles
   // Clean up GSAP animations
+  // Unsubscribe from Raf/Resize
 });
 ```
 
 ## Page Transitions
 
 ```typescript
-onPage(async () => {
-  // Animate out current state
-  await gsap.to(element, { duration: 0.5, opacity: 0 });
-
+// Page entrance
+onPageIn(async () => {
   // Animate in new state
-  await gsap.to(element, { duration: 0.5, opacity: 1 });
+  await gsap.to(element, { 
+    duration: 0.5, 
+    opacity: 1,
+    y: 0,
+    ease: "power2.out"
+  });
 });
+
+// Page exit (with visibility check)
+onPageOut(
+  async () => {
+    // Animate out current state
+    await gsap.to(element, { 
+      duration: 0.3, 
+      opacity: 0,
+      y: -20,
+      ease: "power2.in"
+    });
+  },
+  { element } // Only animate if visible
+);
 ```
 
 ## Viewport Detection
@@ -41,15 +70,22 @@ onPage(async () => {
 const observer = onView(element, {
   threshold: 0.1,
   rootMargin: "0px",
-  autoStart: true,
+  autoStart: false,
   once: false,
-  callback: ({ isIn, direction }) => {
+  callback: ({ isIn }) => {
     if (isIn) {
       // Element entered viewport
+      element.classList.add('in-view');
     } else {
       // Element left viewport
+      element.classList.remove('in-view');
     }
   },
+});
+
+// Start observer in onMount
+onMount(() => {
+  observer.start();
 });
 ```
 
@@ -63,7 +99,30 @@ const track = onTrack(element, {
   callback: (value) => {
     // Handle scroll progress (0-1)
     element.style.transform = `translateY(${value * 100}px)`;
+    element.style.setProperty('--scroll-progress', value.toString());
   },
+});
+```
+
+## Subscription Management
+
+```typescript
+// Animation frame subscription
+const rafUnsubscribe = Raf.add(({ deltaTime, time }) => {
+  // Smooth animations
+  element.style.transform = `rotate(${time * 50}deg)`;
+});
+
+// Resize subscription
+const resizeUnsubscribe = Resize.add(({ width, height }) => {
+  // Responsive behavior
+  element.style.fontSize = width < 768 ? '14px' : '18px';
+});
+
+// Clean up subscriptions
+onDestroy(() => {
+  rafUnsubscribe();
+  resizeUnsubscribe();
 });
 ```
 
@@ -71,6 +130,9 @@ const track = onTrack(element, {
 
 - Always clean up in `onDestroy`
 - Use async/await for page transitions
-- Return cleanup functions when needed
+- Use visibility check in `onPageOut` for performance
 - Handle edge cases and errors
 - Use proper TypeScript types
+- Unsubscribe from all services
+- Use GSAP for smooth animations
+- Test all lifecycle phases

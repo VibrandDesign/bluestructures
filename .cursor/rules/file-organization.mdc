@@ -1,6 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
 # File Organization Rules
 
 ## Module Files
+
+- **Location**: `src/modules/` directory
+# File Organization Rules
+
+## Module Structure
 
 - **Location**: `src/modules/` directory
 - **Naming**: Use descriptive, kebab-case names
@@ -14,17 +24,20 @@
 import gsap from "gsap";
 
 // 2. Internal modules (lifecycle hooks)
-import { onMount, onDestroy, onPage, onView, onTrack } from "@/modules/_";
+import { onMount, onDestroy, onPageIn, onPageOut, onView, onTrack } from "@/modules/_";
 
-// 3. Internal libraries
+// 3. Subscription services
+import { Raf, Resize } from "@lib/subs";
+
+// 4. Internal libraries
 import { Scroll } from "@lib/scroll";
 import State from "@lib/hey";
 
-// 4. Utilities
+// 5. Utilities
 import { clientRect } from "@utils/client-rect";
 import { clamp, map } from "@utils/math";
 
-// 5. Module implementation
+// 6. Module implementation
 export default function (element: HTMLElement, dataset: DOMStringMap) {
   // Implementation
 }
@@ -43,3 +56,4 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
 - **Navigation**: `nav.ts`, `menu.ts`, `tabs.ts`
 - **Interaction**: `hover.ts`, `click.ts`, `scroll.ts`
 - **Layout**: `grid.ts`, `masonry.ts`, `sticky.ts`
+- **Effects**: `parallax.ts`, `reveal.ts`, `morph.ts`
