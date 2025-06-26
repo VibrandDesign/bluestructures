@@ -43,8 +43,34 @@ export function runMount() {
 const pageOut: Array<() => Promise<void>> = [];
 const pageIn: Array<() => Promise<void>> = [];
 
-export function onPageOut(fn: () => Promise<void>) {
-  pageOut.push(fn);
+export function onPageOut(
+  fn: () => Promise<void>,
+  { element }: { element?: HTMLElement } = {}
+) {
+  if (element) {
+    let observer: Observe;
+
+    queueMicrotask(() => {
+      observer = onView(element, {
+        threshold: 0,
+        autoStart: true,
+      });
+    });
+
+    pageOut.push(async () => {
+      let { inView } = observer;
+      console.log("observed", inView);
+
+      // observer.destroy();
+      if (inView) {
+        return await fn();
+      } else {
+        return Promise.resolve();
+      }
+    });
+  } else {
+    pageOut.push(fn);
+  }
 }
 
 export async function runPageOut() {

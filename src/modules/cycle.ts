@@ -21,17 +21,23 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
     });
   });
 
-  onPageOut(async () => {
-    await gsap.to(element, {
-      duration: 1,
-      backgroundColor: "blue",
-    });
+  onPageOut(
+    async () => {
+      console.log("onPageOut");
+      await gsap.to(element, {
+        duration: 1,
+        backgroundColor: "blue",
+      });
 
-    await gsap.to(element, {
-      duration: 1,
-      autoAlpha: 0,
-    });
-  });
+      await gsap.to(element, {
+        duration: 1,
+        autoAlpha: 0,
+      });
+    },
+    {
+      element,
+    }
+  );
 
   onMount(() => {
     // element.style.backgroundColor = "red";
