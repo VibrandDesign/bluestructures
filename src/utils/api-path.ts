@@ -1,5 +1,4 @@
 const basePath = "/api/";
-
 const vercelUrl = "webflow-dev-setup-xi.vercel.app";
 const useSSL = true;
 
