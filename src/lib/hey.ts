@@ -21,6 +21,19 @@ class SimpleEmitter {
   }
 
   /**
+   * Register an event handler that will be called only once and then automatically removed.
+   * @param {string} event - The name of the event.
+   * @param {Function} handler - The callback function to handle the event.
+   */
+  once(event: string, handler: EventHandler): void {
+    const onceHandler = (data: any) => {
+      handler(data);
+      this.off(event, onceHandler);
+    };
+    this.on(event, onceHandler);
+  }
+
+  /**
    * Unregister an event handler for a given event.
    * @param {string} event - The name of the event.
    * @param {Function} handler - The callback function to remove.
@@ -111,6 +124,15 @@ class State {
   }
 
   /**
+   * Register an event handler that will be called only once and then automatically removed.
+   * @param {string} event - The name of the event.
+   * @param {Function} handler - The callback function to handle the event.
+   */
+  static once(event: string, handler: EventHandler): void {
+    this.emitter.once(event, handler);
+  }
+
+  /**
    * Unregister an event handler for a given event.
    * @param {string} event - The name of the event.
    * @param {Function} handler - The callback function to remove.
@@ -158,6 +180,7 @@ const proxyHandler: ProxyHandler<Record<string, any>> = {
 /**
  * @typedef {Object} State
  * @property {Function} on - Register an event handler for a given event.
+ * @property {Function} once - Register an event handler that will be called only once.
  * @property {Function} off - Unregister an event handler for a given event.
  */
 
