@@ -34,10 +34,10 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
         duration: 1,
         autoAlpha: 0,
       });
+    },
+    {
+      element,
     }
-    // {
-    //   element,
-    // }
   );
 
   onMount(() => {
