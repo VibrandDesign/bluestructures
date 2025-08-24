@@ -43,28 +43,28 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   onMount(() => {
     // element.style.backgroundColor = "red";
     // console.log("onMount");
-    observer.start();
+    // observer.start();
   });
 
-  const observer = onView(element, {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.1,
-    autoStart: false,
-    once: false,
-    callback: ({ isIn, direction }) => {
-      console.log("inView", isIn, direction);
-    },
-  });
-
-  // const track = onTrack(element, {
-  //   bounds: [0, 1],
-  //   top: "center",
-  //   bottom: "center",
-  //   callback: (value) => {
-  //     console.log("track", value);
+  // const observer = onView(element, {
+  //   root: null,
+  //   rootMargin: "0px",
+  //   threshold: 0.1,
+  //   autoStart: false,
+  //   once: false,
+  //   callback: ({ isIn, direction }) => {
+  //     console.log("inView", isIn, direction);
   //   },
   // });
+
+  const track = onTrack(element, {
+    bounds: [0, 1],
+    top: "bottom",
+    bottom: "top",
+    callback: (value) => {
+      console.log("track", value);
+    },
+  });
 
   onDestroy(() => {
     // console.log("onDestroy");

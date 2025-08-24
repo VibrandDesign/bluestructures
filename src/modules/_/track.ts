@@ -13,12 +13,21 @@ const DEFAULT_CONFIG: {
   bounds: [0, 1],
   top: "bottom",
   bottom: "top",
-  callback: null,
+  callback: undefined,
 };
 
 export class Track extends Observe {
   value = 0;
   init = false;
+
+  protected isIn(data: any): void {
+    // Track is now in view, start tracking
+    this.#handleScroll();
+  }
+
+  protected isOut(data: any): void {
+    // Track is out of view, stop tracking
+  }
 
   bounds: any;
   config: {
@@ -79,12 +88,11 @@ export class Track extends Observe {
 
     // console.log(this.value);
     this.handleScroll?.(this.value);
-    this.track?.(this.value);
     this.config.callback?.(this.value);
   }
 
   destroy() {
-    this.config.callback = null;
+    this.config.callback = undefined;
     this.#scrollSub();
     this.#resizeSub();
     super.destroy();
