@@ -11,7 +11,6 @@ function setVisuallyHidden(element) {
 
 const splitText = (element) => {
   const content = element.textContent;
-  console.log(content);
   element.textContent = "";
 
   const span = document.createElement("span");
@@ -38,12 +37,12 @@ export default function Split(element) {
   onView(element, {
     autoStart: true,
     callback: ({ isIn }) => {
-      console.log("inView", isIn);
+      // console.log("inView", isIn);
 
       if (isIn) {
         gsap.to(split.chars, {
           yPercent: 0,
-          stagger: 0.05,
+          stagger: 0.02,
         });
       } else {
         gsap.killTweensOf(split.chars);
