@@ -62,7 +62,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
     top: "bottom",
     bottom: "top",
     callback: (value) => {
-      console.log("track", value);
+      console.log("^^", value.toFixed(2));
     },
   });
 
