@@ -1,10 +1,23 @@
 const modules = import.meta.glob("../*.{ts,js}", { eager: true });
 // console.log("modules -> []", modules);
 
+// Extend HTMLElement interface to include our custom property
+declare global {
+  interface HTMLElement {
+    _moduleInitialized?: boolean;
+  }
+}
+
 export function createCycles(dataAttribute = "module") {
   return Array.from(document.querySelectorAll(`[data-${dataAttribute}]`))
     .map((element) => {
-      const attributeValue = (element as HTMLElement).dataset[dataAttribute];
+      const htmlElement = element as HTMLElement;
+      const attributeValue = htmlElement.dataset[dataAttribute];
+
+      // Check if THIS SPECIFIC ELEMENT is already initialized
+      if (htmlElement._moduleInitialized) {
+        return null; // Skip this specific element
+      }
 
       const modulePath = modules[`./../${attributeValue}.ts`]
         ? `./../${attributeValue}.ts`
@@ -19,11 +32,13 @@ export function createCycles(dataAttribute = "module") {
         ).default;
         if (typeof moduleFn === "function") {
           try {
-            return moduleFn(
-              element as HTMLElement,
-              (element as HTMLElement).dataset
-            );
+            // Mark THIS SPECIFIC ELEMENT as initialized
+            htmlElement._moduleInitialized = true;
+
+            return moduleFn(htmlElement, htmlElement.dataset);
           } catch (error) {
+            // Remove the flag if initialization fails
+            delete htmlElement._moduleInitialized;
             console.warn(
               `Failed to call default function for ${dataAttribute} "${attributeValue}":`,
               error
@@ -42,4 +57,9 @@ export function createCycles(dataAttribute = "module") {
       }
     })
     .filter((item) => item !== null);
+}
+
+// Optional: Helper function to manually clear initialization for testing
+export function clearModuleInitialization(element: HTMLElement) {
+  delete element._moduleInitialized;
 }
