@@ -48,9 +48,7 @@ export class ObserverManager {
     config2: ObserveConfig
   ): boolean {
     return (
-      config1.root === config2.root &&
-      config1.rootMargin === config2.rootMargin &&
-      config1.threshold === config2.threshold
+      config1.root === config2.root && config1.rootMargin === config2.rootMargin
     );
   }
 
@@ -69,7 +67,6 @@ export class ObserverManager {
       if (!elementData) return;
 
       const { isIntersecting, intersectionRatio, boundingClientRect } = entry;
-      const threshold = group.config.threshold || 0.1;
 
       let direction = -1;
       if (elementData.lastDirection !== undefined) {
@@ -83,16 +80,16 @@ export class ObserverManager {
       }
       elementData.lastDirection = direction;
 
-      if (intersectionRatio === 0) {
-        elementData.callbacks.isOut?.({ entry, direction });
-        elementData.callbacks.callback?.({ entry, direction, isIn: false });
-      } else if (intersectionRatio >= threshold) {
+      if (isIntersecting) {
         elementData.callbacks.isIn?.({ entry, direction });
         elementData.callbacks.callback?.({ entry, direction, isIn: true });
 
         if (elementData.once) {
           this.removeElement(element);
         }
+      } else {
+        elementData.callbacks.isOut?.({ entry, direction });
+        elementData.callbacks.callback?.({ entry, direction, isIn: false });
       }
     });
   }
@@ -115,7 +112,7 @@ export class ObserverManager {
         (entries) => this.handleIntersection(entries),
         {
           ...config,
-          threshold: [0, config.threshold || 0.1],
+          threshold: [0],
         }
       );
 
@@ -176,7 +173,7 @@ export class Observe {
     config: ObserveConfig = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.1,
+      threshold: 0,
       autoStart: false,
       once: false,
       callback: undefined,

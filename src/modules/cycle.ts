@@ -52,8 +52,8 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
     threshold: 0.1,
     autoStart: false,
     once: false,
-    callback: ({ isIn }) => {
-      // console.log("inView", isIn);
+    callback: ({ isIn, direction }) => {
+      console.log("inView", isIn, direction);
     },
   });
 
