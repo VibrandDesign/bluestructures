@@ -24,7 +24,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
 
   onPageOut(
     async () => {
-      console.log("onPageOut");
+      // console.log("onPageOut");
       await gsap.to(element, {
         duration: 1,
         backgroundColor: "blue",
@@ -57,14 +57,14 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   //   },
   // });
 
-  const track = onTrack(element, {
-    bounds: [0, 1],
-    top: "bottom",
-    bottom: "top",
-    callback: (value) => {
-      console.log("^^", value);
-    },
-  });
+  // const track = onTrack(element, {
+  //   bounds: [0, 1],
+  //   top: "bottom",
+  //   bottom: "top",
+  //   callback: (value) => {
+  //     console.log("^^", value);
+  //   },
+  // });
 
   onDestroy(() => {
     // console.log("onDestroy");
