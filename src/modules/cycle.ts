@@ -11,11 +11,11 @@ import gsap from "@lib/gsap";
 import State from "@lib/hey";
 
 export default function (element: HTMLElement, dataset: DOMStringMap) {
-  console.log("cycle", element);
+  // console.log("cycle", element);
   // State.on("something", () => {});
 
   onPageIn(async () => {
-    console.log("onPageIn");
+    // console.log("onPageIn");
     await gsap.to(element, {
       duration: 0.2,
       backgroundColor: "green",
@@ -42,7 +42,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
 
   onMount(() => {
     // element.style.backgroundColor = "red";
-    console.log("onMount");
+    // console.log("onMount");
     observer.start();
   });
 
@@ -67,7 +67,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   // });
 
   onDestroy(() => {
-    console.log("onDestroy");
+    // console.log("onDestroy");
   });
 
   // return () => {};
