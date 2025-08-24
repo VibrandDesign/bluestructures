@@ -1,7 +1,7 @@
 import State from "@lib/hey";
 
-export default function (element: HTMLElement) {
-  console.log("nav", element);
+export default function (element: HTMLElement, dataset: any) {
+  // console.log("nav", element);
 
   // setInterval(() => {
   //   console.log("count", count++);
