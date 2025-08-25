@@ -98,7 +98,7 @@ Add these stylesheets to your Webflow project:
 
 <!-- Designer CSS -->
 <link rel="stylesheet" href="{YOUR VERCEL PROJECT URL}/styles/out.css" />
-<link rel="stylesheet" href="http://localhost:6545/styles/index.css" />
+<link rel="stylesheet" href="http://localhost:6545/styles/app.css" />
 ```
 
 > **Note**: See [CSS setup notes](./docs/css-issues.md) for handling potential styling conflicts.
@@ -229,7 +229,11 @@ src/
   ├── webflow/         # Webflow integration
   │   └── detect-editor.ts # Editor detection
   └── styles/
-      └── index.css    # Main CSS entry
+      ├── app.css      # Main CSS entry with imports
+      ├── out.css      # Compiled CSS output
+      ├── media.css    # Media queries
+      ├── editor.css   # Editor-specific styles
+      └── mod/         # CSS modules
 api/                   # API routes
 bin/                   # Build scripts
 docs/                  # Documentation

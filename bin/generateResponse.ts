@@ -1,13 +1,13 @@
 import { CONFIG } from "./config";
+import { getValidatedUrlSafe } from "../src/utils/url-validator";
 
 interface BuildOutput {
   path: string;
 }
 
 function generateIndexHtml(outputs: BuildOutput[]) {
-  const vercelUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "{NO VERCEL URL}";
+  // Use the new URL validation
+  const vercelUrl = getValidatedUrlSafe("VERCEL_URL") || "{NO VERCEL URL}";
 
   const protocol = process.env.USE_SSL === "true" ? "https" : "http";
   const localUrl = `${protocol}://localhost:${CONFIG.SERVE_PORT}`;
@@ -23,7 +23,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;script defer src="${localUrl}/${relativePath}"&gt;&lt;/script&gt;</code>
         ${
-          process.env.VERCEL_URL
+          vercelUrl !== "{NO VERCEL URL}"
             ? `
         <code class="script-tag">&lt;script defer src="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;&lt;/script&gt;</code>
         <div class="error-handler-box">
@@ -44,7 +44,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         <a href="/${relativePath}" target="_blank" class="main-link">${relativePath}</a>
         <code class="script-tag">&lt;link rel="stylesheet" href="${localUrl}/${relativePath}"&gt;</code>
         ${
-          process.env.VERCEL_URL
+          vercelUrl !== "{NO VERCEL URL}"
             ? `
         <code class="script-tag">&lt;link rel="stylesheet" href="<a href="${vercelUrl}/${relativePath}" target="_blank">${vercelUrl}/${relativePath}</a>"&gt;</code>
         <div class="error-handler-box">
@@ -206,7 +206,7 @@ function generateIndexHtml(outputs: BuildOutput[]) {
         ${mapLinks ? `<h3>Source Maps:</h3><ul>${mapLinks}</ul>` : ""}
 
         ${
-          !process.env.VERCEL_URL
+          vercelUrl === "{NO VERCEL URL}"
             ? '<div class="vercel-notice"><span class="icon">&#9432;</span><span>Add VERCEL_URL to your .env file for full CI/CD functionality</span><span class="close">&#10005;</span></div>'
             : ""
         }

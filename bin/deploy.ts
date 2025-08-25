@@ -1,3 +1,5 @@
+import { getValidatedUrlSafe } from "../src/utils/url-validator";
+
 async function deploy() {
   if (!process.env.VERCEL_DEPLOY_HOOK) {
     console.log("VERCEL_DEPLOY_HOOK is not set. Set it in the .env file");
@@ -15,12 +17,15 @@ async function deploy() {
   const data = await res.json();
   console.log(data);
 
-  if (process.env.VERCEL_URL) {
-    const url = process.env.VERCEL_URL.startsWith("http")
-      ? process.env.VERCEL_URL
-      : `https://${process.env.VERCEL_URL}`;
-    console.log(`\nDeployment URL: ${url}`);
+  // Use the new URL validation
+  const vercelUrl = getValidatedUrlSafe("VERCEL_URL");
+  if (vercelUrl) {
+    console.log(`\nDeployment URL: ${vercelUrl}`);
     console.log("Check the build progress at the URL above");
+  } else {
+    console.log(
+      "\n⚠️  VERCEL_URL is not set or invalid. Set a valid URL in your .env file"
+    );
   }
 }
 

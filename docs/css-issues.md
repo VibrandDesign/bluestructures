@@ -10,7 +10,7 @@ Add these lines to your Webflow project:
 
 ```html
 <link rel="stylesheet" href="{YOUR VERCEL PROJECT URL}/styles/out.css" />
-<link rel="stylesheet" href="http://localhost:6545/styles/index.css" />
+<link rel="stylesheet" href="http://localhost:6545/styles/app.css" />
 ```
 
 > **Note**: Webflow's JavaScript restrictions prevent us from implementing dynamic script switching.
