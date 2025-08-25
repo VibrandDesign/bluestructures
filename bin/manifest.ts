@@ -28,6 +28,7 @@ interface BuildManifest {
     files: DistFile[];
   };
   distFiles: DistFile[];
+  txtFiles: DistFile[];
   sourceMaps: DistFile[];
 }
 
@@ -81,6 +82,16 @@ function separateSourceMaps(files: DistFile[]): {
   };
 }
 
+function separateTxtFiles(files: DistFile[]): {
+  txtFiles: DistFile[];
+  otherFiles: DistFile[];
+} {
+  return {
+    txtFiles: files.filter((file) => file.path.endsWith(".txt")),
+    otherFiles: files.filter((file) => !file.path.endsWith(".txt")),
+  };
+}
+
 export function generateBuildManifest(
   jsResult: any,
   cssResult: any,
@@ -89,6 +100,7 @@ export function generateBuildManifest(
   const distPath = join(process.cwd(), "dist");
   const allFiles = getDistFiles(distPath);
   const { sourceMaps, otherFiles } = separateSourceMaps(allFiles);
+  const { txtFiles, otherFiles: remainingFiles } = separateTxtFiles(otherFiles);
   const publicFiles = getPublicFiles();
 
   return {
@@ -111,7 +123,8 @@ export function generateBuildManifest(
     public: {
       files: publicFiles,
     },
-    distFiles: otherFiles,
+    distFiles: remainingFiles,
+    txtFiles: txtFiles,
     sourceMaps: sourceMaps,
   };
 }
@@ -251,6 +264,36 @@ export function saveManifestFiles(manifest: BuildManifest) {
               .join("")}
         </div>
     </div>
+
+    ${
+      manifest.txtFiles.length > 0
+        ? `
+    <div class="section">
+        <h2>Webflow Deployment Files (.txt)</h2>
+        <div class="file-list">
+            ${manifest.txtFiles
+              .map(
+                (file) => `
+                <div class="file-item">
+                    <a href="${file.path}" target="_blank" class="file-path">${
+                  file.path
+                }</a>
+                    <span class="file-info">
+                        ${(file.size / 1024).toFixed(2)} KB • 
+                        ${file.type.toUpperCase()} • 
+                        Last modified: ${new Date(
+                          file.lastModified
+                        ).toLocaleString()}
+                    </span>
+                </div>
+            `
+              )
+              .join("")}
+        </div>
+    </div>
+    `
+        : ""
+    }
 
     ${
       manifest.public.files.length > 0
