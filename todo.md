@@ -6,5 +6,5 @@
 
 ## Readme
 
-- [ ] remove /styles from readme how to import css things
-- [ ] remove /index.css as it's app.css
+- [x] remove /styles from readme how to import css things
+- [x] remove /index.css as it's app.css

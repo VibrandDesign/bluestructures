@@ -40,6 +40,20 @@ async function build() {
     console.log("\nJavaScript files:");
     for (const output of result.outputs.values()) {
       console.log(`  - ${output.path}`);
+
+      // Create .js.txt copy if it's a JavaScript file
+      if (output.path.endsWith(".js")) {
+        const txtPath = output.path + ".txt";
+        try {
+          await cp(output.path, txtPath);
+          console.log(`  - ${txtPath} (copy)`);
+        } catch (copyError) {
+          console.warn(
+            `⚠️  Failed to create .txt copy of ${output.path}:`,
+            copyError
+          );
+        }
+      }
     }
 
     console.log("\nCSS files:");
