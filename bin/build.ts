@@ -37,6 +37,10 @@ async function build() {
 
     // Log all generated files
     console.log("\n📁 Generated files:");
+
+    // Track .txt files separately
+    const txtFiles: string[] = [];
+
     console.log("\nJavaScript files:");
     for (const output of result.outputs.values()) {
       console.log(`  - ${output.path}`);
@@ -46,7 +50,7 @@ async function build() {
         const txtPath = output.path + ".txt";
         try {
           await cp(output.path, txtPath);
-          console.log(`  - ${txtPath} (copy)`);
+          txtFiles.push(txtPath);
         } catch (copyError) {
           console.warn(
             `⚠️  Failed to create .txt copy of ${output.path}:`,
@@ -59,6 +63,14 @@ async function build() {
     console.log("\nCSS files:");
     for (const output of cssResult.outputs.values()) {
       console.log(`  - ${output.path}`);
+    }
+
+    // Display .txt files in separate section
+    if (txtFiles.length > 0) {
+      console.log("\n📄 Webflow deployment files (.txt):");
+      for (const txtFile of txtFiles) {
+        console.log(`  - ${txtFile}`);
+      }
     }
 
     // Generate and save manifest files

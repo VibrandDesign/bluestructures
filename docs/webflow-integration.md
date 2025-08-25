@@ -416,3 +416,64 @@ handleEditor((isEditor) => {
 2. **Smooth Animations**: Use efficient animation techniques
 3. **Memory Management**: Proper cleanup of all resources
 4. **User Experience**: Prioritize smooth user interactions
+
+## Deployment with .js.txt Files
+
+### Overview
+
+When building your project, the build system automatically generates `.js.txt` copies of all JavaScript files. These `.txt` files can be uploaded to Webflow's asset panel and used as external scripts, providing a seamless deployment workflow.
+
+### How It Works
+
+1. **Build Process**: When you run `bun run build`, the system generates both `.js` and `.js.txt` files
+2. **Asset Upload**: Upload the `.js.txt` files to Webflow's asset panel
+3. **Script Linking**: Reference these files as external scripts in your Webflow project
+
+### Step-by-Step Deployment
+
+#### 1. Build Your Project
+
+```bash
+bun run build
+```
+
+This generates files like:
+
+- `dist/app.js` (original)
+- `dist/app.js.txt` (copy for Webflow)
+
+#### 2. Upload to Webflow Assets
+
+1. Go to your Webflow project's **Assets** panel
+2. Click **Upload** and select your `.js.txt` files
+3. Note the generated URL (e.g., `https://assets-global.webflow.com/.../app.js.txt`)
+
+#### 3. Link as External Script
+
+In your Webflow project settings:
+
+1. Go to **Project Settings** → **Custom Code**
+2. Add a script tag in the `<head>` section:
+
+```html
+<script src="https://assets-global.webflow.com/.../app.js.txt"></script>
+```
+
+#### 4. Alternative: Page-Specific Scripts
+
+For page-specific scripts, you can also add them to individual pages:
+
+1. Go to the specific page
+2. Click **Page Settings** → **Custom Code**
+3. Add the script tag in the `<head>` section
+
+### Benefits
+
+- **Version Control**: Each build creates new `.txt` files with unique URLs
+- **Caching**: Webflow's CDN provides fast loading and caching
+- **Debugging**: Easy to inspect the source code in browser dev tools
+- **No Build Process**: No need to rebuild on Webflow's servers
+
+### File Structure Example
+
+After building, your `dist` folder will contain:
