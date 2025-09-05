@@ -49,10 +49,12 @@ class _Resize extends Subscribable {
     window.addEventListener("resize", this.update.bind(this));
   }
 
-  update(data: any) {
+  update() {
     if (this.timeoutId) {
       window.clearTimeout(this.timeoutId);
     }
+
+    console.log("update");
 
     this.timeoutId = window.setTimeout(() => {
       const newWidth = window.innerWidth;

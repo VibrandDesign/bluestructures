@@ -3,6 +3,7 @@ import State from "@lib/hey";
 import { Core } from "@unseenco/taxi";
 import { Transition } from "@lib/page-transitions";
 import { Scroll } from "@lib/scroll";
+import { Resize } from "@lib/subs";
 import {
   createCycles,
   runDestroy,
@@ -55,6 +56,7 @@ export class _Pages extends Core {
   async transitionIn({ to, trigger }: TransitionParams) {
     createCycles();
     Scroll.resize();
+    Resize.update();
 
     // State.PAGE = to;
 
