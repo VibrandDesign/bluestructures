@@ -1,3 +1,4 @@
+import { Raf } from "@/lib/subs";
 import {
   onMount,
   onDestroy,
@@ -10,9 +11,16 @@ import gsap from "@lib/gsap";
 // import { Raf, Resize } from "@/lib/subs";/
 import State from "@lib/hey";
 
+import { Scroll } from "@lib/scroll";
+
 export default function (element: HTMLElement, dataset: DOMStringMap) {
   // console.log("cycle", element);
-  // State.on("something", () => {});
+  // State.on("something", () => {})
+  // ;
+
+  State.on("SOMETHING", (data) => {
+    console.log("something", data);
+  });
 
   onPageIn(async () => {
     // console.log("onPageIn");
@@ -66,9 +74,7 @@ export default function (element: HTMLElement, dataset: DOMStringMap) {
   //   },
   // });
 
-  onDestroy(() => {
-    // console.log("onDestroy");
-  });
+  onDestroy(() => {});
 
   // return () => {};
 }
