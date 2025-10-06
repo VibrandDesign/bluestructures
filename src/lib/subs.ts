@@ -54,8 +54,6 @@ class _Resize extends Subscribable {
       window.clearTimeout(this.timeoutId);
     }
 
-    console.log("update");
-
     this.timeoutId = window.setTimeout(() => {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;

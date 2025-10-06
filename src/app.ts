@@ -7,7 +7,9 @@ class _App {
   private scroll = Scroll;
   pages = Pages;
 
-  constructor() {}
+  constructor() {
+    console.log("IIIV");
+  }
 }
 
 export const App = new _App();
