@@ -1,0 +1,13 @@
+*:is([data-wf--button-link--type="secondary"], [data-wf--button--type="secondary"]) > * {
+    padding-right: var(--_layouts---button--secondary-padding-x);
+    padding-left: var(--_layouts---button--secondary-padding-x);
+}
+
+*:is([data-wf--button-link--type="ghost"], [data-wf--button--type="ghost"]) > * {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.button > .button_size:has(.button_icon-wrap[data-wf--button-icon--position='left']) {
+    flex-flow: row-reverse;
+}

@@ -1,0 +1,7 @@
+/* Navbar Styles */
+
+/* Backdrop element for mobile navigation */
+[data-element="navbar-backdrop"] {
+  will-change: backdrop-filter, background-color;
+}
+

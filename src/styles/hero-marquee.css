@@ -1,0 +1,20 @@
+/* Hero Marquee Component Styles */
+
+.home-hero_marquee_component {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+[data-module="hero-marquee"][data-initialized] .home-hero_marquee_list {
+  animation: marquee var(--speed) linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--_layouts---home-hero--marquee-gap)));
+  }
+}
+
