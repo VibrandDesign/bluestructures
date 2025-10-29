@@ -6,7 +6,7 @@ import { prefersReducedMotion } from "@/utils/media";
 gsap.registerPlugin(ScrollTrigger);
 
 const defaults = {
-  ease: "expo.out",
+  ease: "Power2.out",
   duration: 1.2,
 };
 
