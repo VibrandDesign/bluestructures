@@ -8,7 +8,6 @@ class _App {
   pages = Pages;
 
   constructor() {
-    console.log("IIIV");
   }
 }
 

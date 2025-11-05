@@ -55,13 +55,10 @@ function updateSpeedVariable(element, speeds) {
   const currentBreakpoint = getCurrentBreakpoint(Resize.width);
   const speedValue = speeds[currentBreakpoint] || 0;
   const speedWithUnit = `${speedValue}ms`;
-  console.log("Setting --speed:", speedWithUnit, "for breakpoint:", currentBreakpoint);
   element.style.setProperty("--speed", speedWithUnit);
 }
 
 export default function (element, dataset) {
-  console.log("🎪 Hero Marquee v2.0 - WITH MS UNIT");
-  
   const listElement = element.querySelector('[role="list"]');
   
   if (!listElement) {
