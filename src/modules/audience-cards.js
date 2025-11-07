@@ -25,15 +25,16 @@ export default function (element, dataset) {
   let scrollTriggerInstance = null;
   let currentMode = null; // 'desktop' or 'mobile'
 
-  gsap.set(slides, {
-    yPercent: 100,
-  })
+  
 
   /**
    * Initialize desktop animations with GSAP ScrollTrigger
    * Fade up with bounce easing and stagger
    */
   function initDesktopAnimations() {
+    gsap.set(slides, {
+      yPercent: 100,
+    })
     // Create ScrollTrigger animation
     scrollTriggerInstance = ScrollTrigger.create({
       trigger: element,
@@ -47,7 +48,7 @@ export default function (element, dataset) {
           clearProps: 'transform', // Clear props after animation
         });
       },
-      markers: true,
+      markers: false,
       once: true, // Only trigger once
     });
 
