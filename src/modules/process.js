@@ -56,7 +56,7 @@ export default function (element, dataset) {
         slideLabelMessage: 'Monat {{index}} von {{slidesLength}}',
         firstSlideMessage: 'Das ist der erste Monat im Prozess',
         lastSlideMessage: 'Das ist der letzte Monat im Prozess',
-        notificationClass: 'process-carousel_notification',
+        notificationClass: 'carousel_notification',
         id: carouselId,
       },
     });
