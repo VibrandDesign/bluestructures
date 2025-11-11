@@ -2,6 +2,7 @@ import { onMount, onDestroy } from "@/modules/_";
 import { Resize } from "@/lib/subs";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "@/lib/gsap";
+import { Scroll } from "@/lib/scroll";
 
 /**
  * Benefits Scroll Module
@@ -57,6 +58,22 @@ export default function (element, dataset) {
   const PAUSE_DURATION = 0.3;
   const EXIT_DURATION = 0.35;
   const CARD_CYCLE = ENTRY_DURATION + PAUSE_DURATION + EXIT_DURATION; // Total: 1.0
+
+  /**
+   * Update ScrollTrigger and Lenis after height changes
+   */
+  function updateScrollSystems() {
+    // Use requestAnimationFrame to ensure DOM updates are complete
+    requestAnimationFrame(() => {
+      // Refresh ScrollTrigger to recalculate positions
+      ScrollTrigger.refresh();
+      
+      // Resize Lenis to recalculate scroll limits
+      if (Scroll && typeof Scroll.resize === 'function') {
+        Scroll.resize();
+      }
+    });
+  }
 
   /**
    * Scroll to a specific card using timeline labels
@@ -180,7 +197,7 @@ export default function (element, dataset) {
         trigger: section,
         start: `top+=${(sectionInnerHeight / 2)} center`,
         end: `+=${totalScrollDistance}`,
-        scrub: 1,
+        scrub: true,
         pin: false,
       }
     });
@@ -321,6 +338,9 @@ export default function (element, dataset) {
         // Use another RAF to ensure measurements are complete
         requestAnimationFrame(() => {
           createCardAnimations();
+          
+          // Update ScrollTrigger and Lenis after animations are created
+          updateScrollSystems();
         });
         
         // Mark as initialized
@@ -343,6 +363,9 @@ export default function (element, dataset) {
       // Recalculate and recreate animations
       updateCalculations();
       createCardAnimations();
+      
+      // Update ScrollTrigger and Lenis after recalculation
+      updateScrollSystems();
     });
   });
 
