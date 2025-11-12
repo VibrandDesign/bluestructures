@@ -32,7 +32,7 @@ export default function (element, dataset) {
       spaceBetween: 20,
       centeredSlides: true,
       speed: 750,
-      containerModifierClass: 'process-carousel-',
+      containerModifierClass: 'carousel-',
       slideActiveClass: 'process-carousel-slide-active',
       wrapperClass: 'process_carousel_list',
       slideClass: 'process_carousel_list_slide',

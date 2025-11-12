@@ -115,8 +115,6 @@ export default function processComparison(element) {
       // Focus the new tab (automatic activation)
       newTab.focus();
 
-      console.log(currentIndex)
-
       const rotateDegree = 2;
 
       // Update indicator position

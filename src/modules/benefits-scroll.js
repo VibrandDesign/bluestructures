@@ -3,6 +3,7 @@ import { Resize } from "@/lib/subs";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Scroll } from "@/lib/scroll";
+import Swiper, { A11y, Thumbs } from "@/lib/swiper";
 
 /**
  * Benefits Scroll Module
@@ -14,11 +15,16 @@ export default function (element, dataset) {
   const section = element.closest('section');
   const sectionInner = section?.querySelector('.section_inner');
   const mainElement = element.querySelector('[data-element="main"]');
+  const navCarouselElement = element.querySelector('[data-element="nav-carousel"]');
   const cardsList = mainElement?.querySelector('.benefits-scroll_main_list');
   const cards = cardsList?.querySelectorAll('.benefits-scroll_main_list_item');
   const navLinks = element.querySelectorAll('.benefits-scroll_nav_list_item_link');
 
-    const activeNavClass = 'is-active'
+  const activeNavClass = 'is-active';
+
+  // Mobile breakpoint
+  const MOBILE_BREAKPOINT = 667;
+  const mobileMediaQuery = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
 
   if (!section || !sectionInner || !mainElement || !cardsList || !cards.length) {
     console.warn('benefits-scroll: Required elements not found');
@@ -34,6 +40,11 @@ export default function (element, dataset) {
   
   // Store main timeline reference for navigation
   let mainTimeline = null;
+
+  // Store Swiper instances for mobile
+  let mainSwiperInstance = null;
+  let navSwiperInstance = null;
+  let currentMode = null; // 'desktop' or 'mobile'
 
   /**
    * Gets the gap value from the CSS variable --item-gap
@@ -306,45 +317,245 @@ export default function (element, dataset) {
     if (mainTimeline.scrollTrigger) {
       scrollTriggers.push(mainTimeline.scrollTrigger);
     }
+
+    // Set current mode to desktop when animations are created
+    currentMode = 'desktop';
   }
 
   /**
-   * Setup navigation click handlers
+   * Setup navigation click handlers (desktop only)
    */
   function setupNavigation() {
     navLinks.forEach((link, index) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        scrollToCard(index);
+        // Check if we're in desktop mode (either by currentMode or by checking if mainTimeline exists)
+        // Also check viewport width as fallback
+        const isDesktopMode = currentMode === 'desktop' || 
+                             (!currentMode && window.innerWidth > MOBILE_BREAKPOINT) ||
+                             (mainTimeline && mainTimeline.scrollTrigger);
+        
+        if (isDesktopMode) {
+          scrollToCard(index);
+        }
       });
     });
+  }
+
+  /**
+   * Initialize mobile carousels with Swiper
+   */
+  function initMobileCarousels() {
+    if (!navCarouselElement) {
+      console.warn('benefits-scroll: [data-element="nav-carousel"] not found for mobile carousel');
+      return;
+    }
+
+    // Generate unique ID for accessibility
+    const mainCarouselId = `benefits-scroll-main-carousel-${Math.random().toString(36).substr(2, 9)}`;
+    const navCarouselId = `benefits-scroll-nav-carousel-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Set initialized attributes
+    element.setAttribute('data-carousel-initialized', 'true');
+    element.setAttribute('data-scroll-initialized', 'false');
+
+    // First, initialize the nav carousel (thumb navigation)
+    navSwiperInstance = new Swiper(navCarouselElement, {
+      modules: [A11y, Thumbs],
+      direction: 'horizontal',
+      slidesPerView: 'auto',
+      spaceBetween: 16,
+      speed: 300,
+      freeMode: true,
+      watchSlidesProgress: true,
+      wrapperClass: 'benefits-scroll_nav_list',
+      slideClass: 'benefits-scroll_nav_list_item',
+      containerModifierClass: 'carousel-',
+      slideActiveClass: 'is-active',
+      on: {
+        slideChange: function() {
+          // Scroll navSwiper to the active slide
+          // This ensures the active nav item is visible
+          if (this.activeIndex !== undefined) {
+            this.slideTo(this.activeIndex, 300);
+          }
+        },
+      },
+      a11y: {
+        containerMessage: 'Benefits Navigation Carousel',
+        prevSlideMessage: 'Vorheriger Punkt',
+        nextSlideMessage: 'Nächster Punkt',
+        slideLabelMessage: 'Punkt {{index}} von {{slidesLength}}',
+        firstSlideMessage: 'Das ist der erste Punkt',
+        lastSlideMessage: 'Das ist der letzte Punkt',
+        notificationClass: 'carousel_notification',
+        id: navCarouselId,
+      },
+    });
+
+    // Then, initialize the main carousel with thumbs control
+    mainSwiperInstance = new Swiper(mainElement, {
+      modules: [A11y, Thumbs],
+      direction: 'horizontal',
+      slidesPerView: 1.2,
+      spaceBetween: 16,
+      speed: 500,
+      thumbs: {
+        swiper: navSwiperInstance,
+      },
+      containerModifierClass: 'carousel-',
+      slideActiveClass: 'is-active',
+      wrapperClass: 'benefits-scroll_main_list',
+      slideClass: 'benefits-scroll_main_list_item',
+      on: {
+        slideChange: function() {
+          // Update active nav link
+          const activeIndex = this.activeIndex;
+          navLinks.forEach((link, index) => {
+            if (index === activeIndex) {
+              link.classList.add(activeNavClass);
+            } else {
+              link.classList.remove(activeNavClass);
+            }
+          });
+          
+          // Scroll navSwiper to the active slide
+          // This ensures the active nav item is visible when main carousel changes
+          if (navSwiperInstance && activeIndex !== undefined) {
+            navSwiperInstance.slideTo(activeIndex, 300);
+          }
+        },
+      },
+      a11y: {
+        containerMessage: 'Benefits Haupt-Carousel',
+        prevSlideMessage: 'Vorherige Karte',
+        nextSlideMessage: 'Nächste Karte',
+        slideLabelMessage: 'Karte {{index}} von {{slidesLength}}',
+        firstSlideMessage: 'Das ist die erste Karte',
+        lastSlideMessage: 'Das ist die letzte Karte',
+        notificationClass: 'carousel_notification',
+        id: mainCarouselId,
+      },
+    });
+
+    // Set initial active nav link
+    navLinks[0]?.classList.add(activeNavClass);
+
+    // Set CSS variables for carousel mode
+    section.style.setProperty('--section-height', 'auto');
+    section.style.setProperty('--sticky-offset', '0px');
+    currentMode = 'mobile';
+  }
+
+  /**
+   * Destroy mobile carousels
+   */
+  function destroyMobileCarousels() {
+    if (mainSwiperInstance) {
+      mainSwiperInstance.destroy(true, true);
+      mainSwiperInstance = null;
+    }
+
+    if (navSwiperInstance) {
+      navSwiperInstance.destroy(true, true);
+      navSwiperInstance = null;
+    }
+
+    // Remove active classes from nav links
+    navLinks.forEach(link => link.classList.remove(activeNavClass));
+
+    // Reset initialized attributes
+    element.setAttribute('data-carousel-initialized', 'false');
+  }
+
+  /**
+   * Check viewport width and initialize appropriate mode
+   */
+  function checkAndInitialize() {
+    const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+
+    // Already in correct mode, do nothing
+    if ((isMobile && currentMode === 'mobile') || (!isMobile && currentMode === 'desktop')) {
+      return;
+    }
+
+    // Switch from desktop to mobile
+    if (isMobile && currentMode === 'desktop') {
+      // Kill existing ScrollTriggers
+      scrollTriggers.forEach(st => st.kill());
+      scrollTriggers.length = 0;
+      if (mainTimeline) {
+        mainTimeline.kill();
+        mainTimeline = null;
+      }
+      // Clear GSAP transforms
+      cards.forEach((card) => {
+        const cardElement = card.querySelector('.benefits-scroll_card');
+        if (cardElement) {
+          gsap.set(cardElement, { clearProps: 'all' });
+        }
+        gsap.set(card, { clearProps: 'all' });
+      });
+      initMobileCarousels();
+      return;
+    }
+
+    // Switch from mobile to desktop
+    if (!isMobile && currentMode === 'mobile') {
+      destroyMobileCarousels();
+      // Wait for fonts and DOM to be ready
+      document.fonts.ready.then(() => {
+        requestAnimationFrame(() => {
+          updateCalculations();
+          requestAnimationFrame(() => {
+            createCardAnimations();
+            updateScrollSystems();
+            // Set initialized attributes for scroll mode
+            element.setAttribute('data-scroll-initialized', 'true');
+            element.setAttribute('data-carousel-initialized', 'false');
+          });
+        });
+      });
+      return;
+    }
+
+    // First initialization
+    if (isMobile) {
+      initMobileCarousels();
+    } else {
+      // Wait for fonts to be loaded before measuring heights
+      document.fonts.ready.then(() => {
+        requestAnimationFrame(() => {
+          updateCalculations();
+          requestAnimationFrame(() => {
+            createCardAnimations();
+            updateScrollSystems();
+            // Set initialized attributes for scroll mode
+            element.setAttribute('data-scroll-initialized', 'true');
+            element.setAttribute('data-carousel-initialized', 'false');
+          });
+        });
+      });
+    }
   }
 
   /**
    * Initialize calculations on mount
    */
   onMount(() => {
+    // Initialize both attributes to false initially
+    element.setAttribute('data-scroll-initialized', 'false');
+    element.setAttribute('data-carousel-initialized', 'false');
+
     // Setup navigation click handlers
     setupNavigation();
 
-    // Wait for fonts to be loaded before measuring heights
+    // Wait for fonts to be loaded before initializing
     document.fonts.ready.then(() => {
       // Use requestAnimationFrame to ensure DOM is fully ready after fonts load
       requestAnimationFrame(() => {
-        // Initial calculation
-        updateCalculations();
-        
-        // Create card animations after calculations are done
-        // Use another RAF to ensure measurements are complete
-        requestAnimationFrame(() => {
-          createCardAnimations();
-          
-          // Update ScrollTrigger and Lenis after animations are created
-          updateScrollSystems();
-        });
-        
-        // Mark as initialized
-        element.setAttribute('data-initialized', '');
+        // Initial check and setup
+        checkAndInitialize();
       });
     });
   });
@@ -356,16 +567,22 @@ export default function (element, dataset) {
   
   onMount(() => {
     resizeUnsubscribe = Resize.add(() => {
-      // Kill existing ScrollTriggers before recalculating
-      scrollTriggers.forEach(st => st.kill());
-      scrollTriggers.length = 0;
-      
-      // Recalculate and recreate animations
-      updateCalculations();
-      createCardAnimations();
-      
-      // Update ScrollTrigger and Lenis after recalculation
-      updateScrollSystems();
+      // Check if we need to switch modes
+      checkAndInitialize();
+
+      // If in desktop mode, recalculate
+      if (currentMode === 'desktop') {
+        // Kill existing ScrollTriggers before recalculating
+        scrollTriggers.forEach(st => st.kill());
+        scrollTriggers.length = 0;
+        
+        // Recalculate and recreate animations
+        updateCalculations();
+        createCardAnimations();
+        
+        // Update ScrollTrigger and Lenis after recalculation
+        updateScrollSystems();
+      }
     });
   });
 
@@ -380,6 +597,15 @@ export default function (element, dataset) {
     // Kill all ScrollTriggers
     scrollTriggers.forEach(st => st.kill());
     scrollTriggers.length = 0;
+
+    // Kill timeline
+    if (mainTimeline) {
+      mainTimeline.kill();
+      mainTimeline = null;
+    }
+
+    // Destroy mobile carousels
+    destroyMobileCarousels();
   });
 }
 
