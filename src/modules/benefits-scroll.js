@@ -389,6 +389,8 @@ export default function (element, dataset) {
         firstSlideMessage: 'Das ist der erste Punkt',
         lastSlideMessage: 'Das ist der letzte Punkt',
         notificationClass: 'carousel_notification',
+        
+      slideRole: 'listitem',
         id: navCarouselId,
       },
     });
@@ -434,6 +436,8 @@ export default function (element, dataset) {
         firstSlideMessage: 'Das ist die erste Karte',
         lastSlideMessage: 'Das ist die letzte Karte',
         notificationClass: 'carousel_notification',
+        
+      slideRole: 'listitem',
         id: mainCarouselId,
       },
     });

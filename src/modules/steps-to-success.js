@@ -91,6 +91,7 @@ export default function (element, dataset) {
         firstSlideMessage: 'Das ist der erste Schritt',
         lastSlideMessage: 'Das ist der letzte Schritt',
         notificationClass: 'carousel_notification',
+        slideRole: 'listitem',
         id: carouselId,
       },
     });

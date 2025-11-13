@@ -52,6 +52,7 @@ export default function (element, dataset) {
       firstSlideMessage: 'Das ist das erste Testimonial',
       lastSlideMessage: 'Das ist das letzte Testimonial',
       notificationClass: 'carousel_notification',
+      slideRole: 'listitem',
       id: carouselId,
     },
   });

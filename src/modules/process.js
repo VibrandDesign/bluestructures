@@ -57,6 +57,7 @@ export default function (element, dataset) {
         firstSlideMessage: 'Das ist der erste Monat im Prozess',
         lastSlideMessage: 'Das ist der letzte Monat im Prozess',
         notificationClass: 'carousel_notification',
+        slideRole: 'listitem',
         id: carouselId,
       },
     });

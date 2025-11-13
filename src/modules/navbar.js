@@ -55,7 +55,6 @@ export default function (element, dataset) {
     trigger.setAttribute('aria-label', 'Hauptmenü öffnen');
     
     dropdown.id = dropdownId;
-    dropdown.setAttribute('aria-hidden', 'true');
   }
 
   /**
@@ -443,7 +442,7 @@ export default function (element, dataset) {
       
       // Reset ARIA states
       trigger.setAttribute('aria-expanded', 'false');
-      dropdown.setAttribute('aria-hidden', 'true');
+      dropdown.removeAttribute('aria-hidden');
     } else {
       // Initialize mobile state
       element.setAttribute('data-open', 'false');
@@ -455,6 +454,7 @@ export default function (element, dataset) {
         backdropFilter: 'blur(0px)',
         backgroundColor: 'rgba(0, 0, 0, 0)'
       });
+      dropdown.setAttribute('aria-hidden', 'true');
     }
   }
 

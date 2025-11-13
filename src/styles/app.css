@@ -2,8 +2,6 @@
 /* @import "./mod/fluid-type.css"; */
 @import "./mod/utils.css";
 @import "./buttons.css";
-@import "./navbar.css";
-@import "./hero-marquee.css";
 
 /* Webflow Resets */
 
@@ -12,11 +10,3 @@
   display: none;
 }
 
-/* Section Header */
-.section-header:has([data-wf--section-header-orientation--settings-orientation="center"]) {
-  margin: 0 auto;
-}
-
-.section-header:has([data-wf--section-header-orientation--settings-orientation="right"]) {
-  margin-left: auto;
-}
